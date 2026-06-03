@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1920
     height: 989
   m_ShowMode: 4
-  m_Title: Project
+  m_Title: Scene
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 112}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 44
+  controlID: 49
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -145,7 +145,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 112}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 45
+  controlID: 50
   draggingID: 0
 --- !u!114 &7
 MonoBehaviour:
@@ -171,7 +171,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 56}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 46
+  controlID: 51
   draggingID: 0
 --- !u!114 &8
 MonoBehaviour:
@@ -629,29 +629,41 @@ MonoBehaviour:
     m_TreeViewState:
       scrollPos: {x: 0, y: 64}
       m_SelectedIDs:
-      - m_Data: 46896
+      - m_Data: -46556
       m_LastClickedID:
-        m_Data: 0
+        m_Data: -46556
       m_ExpandedIDs:
-      - m_Data: -7422
-      - m_Data: -7398
-      - m_Data: -7290
-      - m_Data: -7278
-      - m_Data: -7218
-      - m_Data: -7186
-      - m_Data: -7174
-      - m_Data: -6838
-      - m_Data: -6826
-      - m_Data: -6786
-      - m_Data: -6782
-      - m_Data: -6778
-      - m_Data: -1324
-      - m_Data: -1320
+      - m_Data: -49218
+      - m_Data: -49202
+      - m_Data: -49198
+      - m_Data: -49194
+      - m_Data: -46884
+      - m_Data: -46868
+      - m_Data: -46584
+      - m_Data: -46580
+      - m_Data: -46556
+      - m_Data: -46472
+      - m_Data: -46460
+      - m_Data: -46448
+      - m_Data: -46436
+      - m_Data: -46424
+      - m_Data: -46412
+      - m_Data: -46236
+      - m_Data: -45948
+      - m_Data: -45924
+      - m_Data: -45912
+      - m_Data: -45900
+      - m_Data: -45888
+      - m_Data: -45848
+      - m_Data: -45844
+      - m_Data: -45840
+      - m_Data: -45584
+      - m_Data: -5572
       - m_Data: -1296
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: office_-_assets (1)
-        m_OriginalName: office_-_assets (1)
+        m_Name: cc0_newspaper_stack_-_ready_to_unity_hdrp
+        m_OriginalName: cc0_newspaper_stack_-_ready_to_unity_hdrp
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
@@ -659,7 +671,7 @@ MonoBehaviour:
           width: 0
           height: 0
         m_UserData:
-          m_Data: -6778
+          m_Data: -49194
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
         m_OriginalEventType: 0
@@ -1324,9 +1336,9 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: 3.150213, y: 0.39147732, z: -2.4687097}
+    m_Target: {x: 0.31392717, y: -4.5288363, z: -5.159513}
     speed: 2
-    m_Value: {x: 3.150213, y: 0.39147732, z: -2.4687097}
+    m_Value: {x: 0.31392717, y: -4.5288363, z: -5.159513}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1372,13 +1384,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.16607931, y: 0.6958336, z: -0.17049856, w: -0.67768997}
+    m_Target: {x: -0.17267609, y: 0.8243853, z: -0.3406133, w: -0.41792053}
     speed: 2
-    m_Value: {x: -0.16530839, y: 0.69503605, z: -0.16919824, w: -0.6789476}
+    m_Value: {x: -0.17317788, y: 0.82371503, z: -0.34033638, w: -0.41913506}
   m_Size:
-    m_Target: 1.6736623
+    m_Target: 6.9345603
     speed: 2
-    m_Value: 1.7525259
+    m_Value: 6.635943
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -1436,7 +1448,7 @@ MonoBehaviour:
     x: 1751
     y: -192
     width: 1183
-    height: 592
+    height: 591.5
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -1456,7 +1468,7 @@ MonoBehaviour:
   m_ShowGizmos: 0
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 1183, y: 571}
+  m_TargetSize: {x: 1183, y: 570.5}
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
@@ -1471,10 +1483,10 @@ MonoBehaviour:
     m_VRangeLocked: 0
     hZoomLockedByDefault: 0
     vZoomLockedByDefault: 0
-    m_HBaseRangeMin: -295.75
-    m_HBaseRangeMax: 295.75
-    m_VBaseRangeMin: -142.75
-    m_VBaseRangeMax: 142.75
+    m_HBaseRangeMin: -591.5
+    m_HBaseRangeMax: 591.5
+    m_VBaseRangeMin: -285.25
+    m_VBaseRangeMax: 285.25
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -1493,22 +1505,22 @@ MonoBehaviour:
       x: 0
       y: 21
       width: 1183
-      height: 571
-    m_Scale: {x: 2, y: 2}
-    m_Translation: {x: 591.5, y: 285.5}
+      height: 570.5
+    m_Scale: {x: 1, y: 1}
+    m_Translation: {x: 591.5, y: 285.25}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
-      x: -295.75
-      y: -142.75
-      width: 591.5
-      height: 285.5
+      x: -591.5
+      y: -285.25
+      width: 1183
+      height: 570.5
     m_MinimalGUI: 1
-  m_defaultScale: 2
-  m_LastWindowPixelSize: {x: 1183, y: 592}
+  m_defaultScale: 1
+  m_LastWindowPixelSize: {x: 1183, y: 591.5}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000
@@ -1636,21 +1648,21 @@ MonoBehaviour:
     m_IsLocked: 0
   m_LastLocalAssetsSearchArea: 1
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
+    scrollPos: {x: 0, y: 180}
     m_SelectedIDs:
-    - m_Data: 51512
+    - m_Data: 51500
     m_LastClickedID:
-      m_Data: 51512
+      m_Data: 51500
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 51164
-    - m_Data: 51166
+    - m_Data: 51154
+    - m_Data: 51156
     - m_Data: 1000000000
     - m_Data: 2147483647
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: OfficeRoom
+      m_OriginalName: OfficeRoom
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
@@ -1658,10 +1670,10 @@ MonoBehaviour:
         width: 0
         height: 0
       m_UserData:
-        m_Data: 0
+        m_Data: 51500
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_TrimLeadingAndTrailingWhitespace: 0
       m_ClientGUIView: {fileID: 10}
@@ -1679,8 +1691,8 @@ MonoBehaviour:
       m_Data: 0
     m_ExpandedIDs:
     - m_Data: 0
-    - m_Data: 51164
-    - m_Data: 51166
+    - m_Data: 51154
+    - m_Data: 51156
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1708,14 +1720,14 @@ MonoBehaviour:
       m_ResourceFile: 
   m_ListAreaState:
     m_SelectedInstanceIDs:
-    - m_Data: 46896
-    m_LastClickedInstanceID: 46896
+    - m_Data: -46556
+    m_LastClickedInstanceID: -46556
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: []
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: office_-_assets (1)
-      m_OriginalName: office_-_assets (1)
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
@@ -1723,10 +1735,10 @@ MonoBehaviour:
         width: 0
         height: 0
       m_UserData:
-        m_Data: 51790
+        m_Data: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 0
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 1
       m_TrimLeadingAndTrailingWhitespace: 0
       m_ClientGUIView: {fileID: 10}
