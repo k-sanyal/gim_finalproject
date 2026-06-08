@@ -5,31 +5,39 @@ public class PlayerController : MonoBehaviour
     [Header("Camera")]
     public Transform cameraTransform;
 
-    [Header("Move Settings")]
+    [Header("Movement")]
     public float moveSpeed = 2.5f;
+    public float gravity = -9.81f;
 
-    [Header("Mouse Look Settings")]
-    public float mouseSensitivity = 1.5f;
-    public float lookSmooth = 10f;
+    [Header("Mouse Look")]
+    public float mouseSensitivity = 1.0f;
+    public float lookSmooth = 12f;
 
     [Header("Vertical Look Limit")]
-    public float minPitch = -30f;
-    public float maxPitch = 30f;
+    public float minPitch = -25f;
+    public float maxPitch = 25f;
+
+    [Header("State")]
+    public bool isSitting = false;
+
+    private CharacterController controller;
 
     private float targetYaw;
     private float targetPitch;
-
     private float currentYaw;
     private float currentPitch;
 
+    private float verticalVelocity;
+
     void Start()
     {
+        controller = GetComponent<CharacterController>();
+
         if (cameraTransform == null)
         {
             cameraTransform = Camera.main.transform;
         }
 
-        // 시작할 때 현재 Player의 Y 회전값을 기준으로 잡음
         targetYaw = transform.eulerAngles.y;
         currentYaw = targetYaw;
 
@@ -39,17 +47,19 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        MovePlayer();
+        if (!isSitting)
+        {
+            MovePlayer();
+        }
+
         LookWithMouse();
 
-        // ESC 누르면 마우스 잠금 해제
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
 
-        // 다시 클릭하면 마우스 잠금
         if (Input.GetMouseButtonDown(0))
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -58,20 +68,19 @@ public class PlayerController : MonoBehaviour
     }
 
     void MovePlayer()
-    {
-        float horizontal = Input.GetAxisRaw("Horizontal"); // A, D
-        float vertical = Input.GetAxisRaw("Vertical");     // W, S
+{
+    float horizontal = Input.GetAxisRaw("Horizontal");
+    float vertical = Input.GetAxisRaw("Vertical");
 
-        Vector3 moveDirection =
-            transform.right * horizontal +
-            transform.forward * vertical;
+    Vector3 moveDirection =
+        transform.right * horizontal +
+        transform.forward * vertical;
 
-        moveDirection.y = 0f;
-        moveDirection.Normalize();
+    moveDirection.y = 0f;
+    moveDirection.Normalize();
 
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
-    }
-
+    controller.Move(moveDirection * moveSpeed * Time.deltaTime);
+}
     void LookWithMouse()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
@@ -82,22 +91,30 @@ public class PlayerController : MonoBehaviour
 
         targetPitch = Mathf.Clamp(targetPitch, minPitch, maxPitch);
 
-        currentYaw = Mathf.Lerp(
-            currentYaw,
-            targetYaw,
-            Time.deltaTime * lookSmooth
-        );
+        currentYaw = Mathf.Lerp(currentYaw, targetYaw, Time.deltaTime * lookSmooth);
+        currentPitch = Mathf.Lerp(currentPitch, targetPitch, Time.deltaTime * lookSmooth);
 
-        currentPitch = Mathf.Lerp(
-            currentPitch,
-            targetPitch,
-            Time.deltaTime * lookSmooth
-        );
-
-        // 좌우 회전은 Player 전체가 담당
         transform.rotation = Quaternion.Euler(0f, currentYaw, 0f);
-
-        // 위아래 회전은 Main Camera만 담당
         cameraTransform.localRotation = Quaternion.Euler(currentPitch, 0f, 0f);
+    }
+
+    public void SitAt(Transform sitPoint)
+    {
+        isSitting = true;
+
+        controller.enabled = false;
+
+        transform.position = sitPoint.position;
+        transform.rotation = sitPoint.rotation;
+
+        controller.enabled = true;
+
+        targetYaw = transform.eulerAngles.y;
+        currentYaw = targetYaw;
+
+        targetPitch = 0f;
+        currentPitch = 0f;
+
+        cameraTransform.localRotation = Quaternion.identity;
     }
 }
