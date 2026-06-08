@@ -18,11 +18,24 @@ public class ChairSitInteraction : MonoBehaviour
 
     void Start()
     {
-        HideText();
+        if (chairText != null)
+        {
+            chairText.text = message;
+        }
+
+        if (chairUI != null)
+        {
+            chairUI.SetActive(false);
+        }
     }
 
     void Update()
     {
+        if (playerNear)
+        {
+            ShowText();
+        }
+
         if (playerNear && Input.GetKeyDown(KeyCode.E))
         {
             SitPlayer();
@@ -33,8 +46,25 @@ public class ChairSitInteraction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("의자 범위 진입");
+
             playerController = other.GetComponent<PlayerController>();
             playerNear = true;
+            ShowText();
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerNear = true;
+
+            if (playerController == null)
+            {
+                playerController = other.GetComponent<PlayerController>();
+            }
+
             ShowText();
         }
     }
@@ -43,6 +73,8 @@ public class ChairSitInteraction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("의자 범위 나감");
+
             playerNear = false;
             playerController = null;
             HideText();
@@ -51,8 +83,17 @@ public class ChairSitInteraction : MonoBehaviour
 
     void SitPlayer()
     {
-        if (playerController == null) return;
-        if (sitPoint == null) return;
+        if (playerController == null)
+        {
+            Debug.LogWarning("PlayerController가 연결되지 않았음");
+            return;
+        }
+
+        if (sitPoint == null)
+        {
+            Debug.LogWarning("SitPoint가 연결되지 않았음");
+            return;
+        }
 
         playerController.SitAt(sitPoint);
 
@@ -62,13 +103,23 @@ public class ChairSitInteraction : MonoBehaviour
 
     void ShowText()
     {
-        chairUI.SetActive(true);
-        chairText.text = message;
+        if (chairUI != null && !chairUI.activeSelf)
+        {
+            Debug.Log("의자 UI 표시");
+            chairUI.SetActive(true);
+        }
+
+        if (chairText != null)
+        {
+            chairText.text = message;
+        }
     }
 
     void HideText()
     {
-        chairUI.SetActive(false);
-        chairText.text = "";
+        if (chairUI != null)
+        {
+            chairUI.SetActive(false);
+        }
     }
 }

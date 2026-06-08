@@ -221,6 +221,8 @@ GameObject:
   - component: {fileID: 6997700}
   - component: {fileID: 6997699}
   - component: {fileID: 6997701}
+  - component: {fileID: 6997702}
+  - component: {fileID: 6997703}
   m_Layer: 0
   m_Name: Chair
   m_TagString: Untagged
@@ -321,8 +323,51 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.54796034, y: 0.84, z: 0.63}
+  m_Size: {x: 4.44, y: 2.75, z: 3.07}
   m_Center: {x: -0.034233574, y: 0.45076326, z: -0.0014815326}
+--- !u!114 &6997702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6997697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e04fae6ab61f094a97c9bc9e6786ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChairSitInteraction
+  sitPoint: {fileID: 586530925}
+  chairUI: {fileID: 45348844}
+  chairText: {fileID: 176966220}
+  message: Press E to sit
+--- !u!54 &6997703
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6997697}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &11181326
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,17 +735,17 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 45348844}
   m_LocalRotation: {x: -1.4252027e-17, y: -0.7053774, z: -2.219981e-17, w: 0.70883197}
-  m_LocalPosition: {x: 0, y: 0, z: 238.98795}
-  m_LocalScale: {x: 0.6423432, y: 0.6423433, z: 0.6423432}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 0.087}
+  m_LocalScale: {x: 0.0031941, y: 0.0031941, z: 0.0031941}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 176966219}
   m_Father: {fileID: 6997698}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.9859209, y: 163.79622}
-  m_SizeDelta: {x: 757.5, y: 510}
+  m_AnchoredPosition: {x: -0.09, y: 0.96}
+  m_SizeDelta: {x: 500, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &45348846
 MonoBehaviour:
@@ -881,15 +926,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 176966218}
   m_LocalRotation: {x: 0, y: 0.9749557, z: -0, w: -0.22239925}
-  m_LocalPosition: {x: 0, y: 0, z: -3.002}
-  m_LocalScale: {x: 0.007132, y: 0.007132, z: 0.007132}
+  m_LocalPosition: {x: 0, y: 0, z: -3}
+  m_LocalScale: {x: 2.1712954, y: 2.1712954, z: 2.1712954}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 45348845}
   m_LocalEulerAnglesHint: {x: 0, y: 205.7, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -372.085, y: -253.275}
+  m_AnchoredPosition: {x: -153.9, y: 17}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &176966220
@@ -914,8 +959,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Press E to sit
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -939,8 +984,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 20
+  m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1873,7 +1918,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 586530925}
-  - component: {fileID: 586530926}
   m_Layer: 0
   m_Name: SitPoint
   m_TagString: Untagged
@@ -1890,28 +1934,12 @@ Transform:
   m_GameObject: {fileID: 586530924}
   serializedVersion: 2
   m_LocalRotation: {x: -0.005157357, y: -0.4545861, z: -0.010104355, w: -0.8906306}
-  m_LocalPosition: {x: -0.0040097577, y: 0.4971735, z: -0.049876653}
+  m_LocalPosition: {x: -0.004, y: 0.036, z: -0.12}
   m_LocalScale: {x: 0.77081186, y: 0.7708119, z: 0.7708121}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6997698}
   m_LocalEulerAnglesHint: {x: 0, y: -101.32, z: 1.3}
---- !u!114 &586530926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 586530924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e04fae6ab61f094a97c9bc9e6786ae6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ChairSitInteraction
-  sitPoint: {fileID: 586530925}
-  chairUI: {fileID: 45348844}
-  chairText: {fileID: 176966220}
-  message: "E\uD0A4\uB97C \uB20C\uB7EC \uC549\uAE30"
 --- !u!1 &678531482
 GameObject:
   m_ObjectHideFlags: 0
@@ -2639,13 +2667,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1043902865}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.6427877, z: -0, w: -0.7660444}
   m_LocalPosition: {x: 0.105, y: 2.053, z: 0.043}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1212142752}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 280, z: 0}
 --- !u!114 &1043902869
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2916,7 +2944,7 @@ GameObject:
   - component: {fileID: 1212142754}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4322,8 +4350,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.89, y: -2.34, z: 2.4}
-  m_Center: {x: 0.32, y: -0.2, z: 0.0000028707743}
+  m_Size: {x: 3.53, y: 2.36, z: 2.56}
+  m_Center: {x: 0.32, y: -0.46, z: 0.0000028707743}
 --- !u!1 &1888568461
 GameObject:
   m_ObjectHideFlags: 0
