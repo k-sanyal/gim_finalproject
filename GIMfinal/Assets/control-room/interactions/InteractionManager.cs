@@ -20,6 +20,8 @@ public class InteractionManager : MonoBehaviour
     public GameProgressController gameProgress;
 
     private InteractableObject currentObject;
+    private InteractableObject openedObject;
+
     private bool isDetailOpen = false;
 
     void Update()
@@ -85,6 +87,7 @@ public class InteractionManager : MonoBehaviour
     void OpenDetail(InteractableObject obj)
     {
         isDetailOpen = true;
+        openedObject = obj;
 
         hoverPanel.SetActive(false);
         detailPanel.SetActive(true);
@@ -97,11 +100,6 @@ public class InteractionManager : MonoBehaviour
 
         titleText.text = obj.objectName;
         bodyText.text = obj.detailDescription;
-
-        if (gameProgress != null)
-        {
-            gameProgress.RegisterViewedObject(obj);
-        }
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -129,6 +127,16 @@ public class InteractionManager : MonoBehaviour
         isDetailOpen = false;
 
         detailPanel.SetActive(false);
+
+        if (openedObject != null && !openedObject.isMonitor)
+        {
+            if (gameProgress != null)
+            {
+                gameProgress.RegisterViewedObject(openedObject);
+            }
+        }
+
+        openedObject = null;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

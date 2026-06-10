@@ -23,19 +23,29 @@ public class GameProgressController : MonoBehaviour
         UpdateObjectiveText();
     }
 
-    public void RegisterViewedObject(InteractableObject obj)
+   public void RegisterViewedObject(InteractableObject obj)
+{
+    if (obj == null)
     {
-        if (obj == null) return;
-
-        if (obj.requiredForSignalProgress)
-        {
-            obj.hasBeenViewed = true;
-            Debug.Log(obj.objectName + " viewed.");
-        }
-
-        CheckSignalPhaseUnlock();
-        UpdateObjectiveText();
+        Debug.LogWarning("RegisterViewedObject failed: obj is null");
+        return;
     }
+
+    Debug.Log("RegisterViewedObject called: " + obj.objectName);
+
+    if (obj.requiredForSignalProgress)
+    {
+        obj.hasBeenViewed = true;
+        Debug.Log(obj.objectName + " marked as viewed.");
+    }
+    else
+    {
+        Debug.Log(obj.objectName + " is not required for progress.");
+    }
+
+    CheckSignalPhaseUnlock();
+    UpdateObjectiveText();
+}
 
     void CheckSignalPhaseUnlock()
     {
