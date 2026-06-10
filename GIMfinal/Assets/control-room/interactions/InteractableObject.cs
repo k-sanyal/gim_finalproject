@@ -8,6 +8,10 @@ public class InteractableObject : MonoBehaviour
     [TextArea(3, 10)]
     public string detailDescription;
 
+    [Header("Progress")]
+    public bool requiredForSignalProgress = true;
+    public bool hasBeenViewed = false;
+
     [Header("Object Type")]
-    public bool isProgressObject = false;
+    public bool isMonitor = false;
 }

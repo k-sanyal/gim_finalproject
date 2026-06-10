@@ -16,6 +16,9 @@ public class InteractionManager : MonoBehaviour
     public TMP_Text titleText;
     public TMP_Text bodyText;
 
+    [Header("Game Progress")]
+    public GameProgressController gameProgress;
+
     private InteractableObject currentObject;
     private bool isDetailOpen = false;
 
@@ -63,7 +66,15 @@ public class InteractionManager : MonoBehaviour
     void ShowHover(InteractableObject obj)
     {
         hoverPanel.SetActive(true);
-        hoverText.text = obj.objectName + "\nK : 자세히 보기";
+
+        if (obj.isMonitor && gameProgress != null && gameProgress.IsSignalPhaseUnlocked())
+        {
+            hoverText.text = obj.objectName + "\nK : Start Signal Monitoring";
+        }
+        else
+        {
+            hoverText.text = obj.objectName + "\nK : Inspect";
+        }
     }
 
     void HideHover()
@@ -78,8 +89,36 @@ public class InteractionManager : MonoBehaviour
         hoverPanel.SetActive(false);
         detailPanel.SetActive(true);
 
+        if (obj.isMonitor)
+        {
+            OpenMonitorDetail(obj);
+            return;
+        }
+
         titleText.text = obj.objectName;
         bodyText.text = obj.detailDescription;
+
+        if (gameProgress != null)
+        {
+            gameProgress.RegisterViewedObject(obj);
+        }
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    void OpenMonitorDetail(InteractableObject obj)
+    {
+        titleText.text = obj.objectName;
+
+        if (gameProgress != null && gameProgress.IsSignalPhaseUnlocked())
+        {
+            bodyText.text = "Signal monitoring is now available.\nThe system is ready to begin scanning incoming radio data.";
+        }
+        else
+        {
+            bodyText.text = "The monitor is not ready yet.\nReview the observation materials first.";
+        }
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

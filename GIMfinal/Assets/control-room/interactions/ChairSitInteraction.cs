@@ -11,10 +11,14 @@ public class ChairSitInteraction : MonoBehaviour
     public TMP_Text chairText;
 
     [Header("Message")]
-    public string message = "E키를 눌러 앉기";
+    public string message = "Press E to sit";
+
+    [Header("Game Progress")]
+    public GameProgressController gameProgress;
 
     private PlayerController playerController;
     private bool playerNear = false;
+    private bool hasSat = false;
 
     void Start()
     {
@@ -31,6 +35,12 @@ public class ChairSitInteraction : MonoBehaviour
 
     void Update()
     {
+        if (hasSat)
+        {
+            HideText();
+            return;
+        }
+
         if (playerNear)
         {
             ShowText();
@@ -44,9 +54,11 @@ public class ChairSitInteraction : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
+        if (hasSat) return;
+
         if (other.CompareTag("Player"))
         {
-            Debug.Log("의자 범위 진입");
+            Debug.Log("Chair area entered.");
 
             playerController = other.GetComponent<PlayerController>();
             playerNear = true;
@@ -56,6 +68,8 @@ public class ChairSitInteraction : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
+        if (hasSat) return;
+
         if (other.CompareTag("Player"))
         {
             playerNear = true;
@@ -73,7 +87,7 @@ public class ChairSitInteraction : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Debug.Log("의자 범위 나감");
+            Debug.Log("Chair area exited.");
 
             playerNear = false;
             playerController = null;
@@ -85,27 +99,43 @@ public class ChairSitInteraction : MonoBehaviour
     {
         if (playerController == null)
         {
-            Debug.LogWarning("PlayerController가 연결되지 않았음");
+            Debug.LogWarning("PlayerController is not assigned.");
             return;
         }
 
         if (sitPoint == null)
         {
-            Debug.LogWarning("SitPoint가 연결되지 않았음");
+            Debug.LogWarning("SitPoint is not assigned.");
             return;
         }
 
         playerController.SitAt(sitPoint);
 
-        HideText();
+        hasSat = true;
         playerNear = false;
+
+        HideText();
+
+        if (gameProgress != null)
+        {
+            gameProgress.StartInfoPhase();
+        }
+
+        // Optional: disable the chair trigger after sitting
+        // Collider chairCollider = GetComponent<Collider>();
+        // if (chairCollider != null)
+        // {
+        //     chairCollider.enabled = false;
+        // }
     }
 
     void ShowText()
     {
+        if (hasSat) return;
+
         if (chairUI != null && !chairUI.activeSelf)
         {
-            Debug.Log("의자 UI 표시");
+            Debug.Log("Chair UI shown.");
             chairUI.SetActive(true);
         }
 
