@@ -1,10 +1,10 @@
 using UnityEngine;
-using Cinemachine;
+using Unity.Cinemachine;
 
 public class MonitorInteract : MonoBehaviour
 {
-    public CinemachineVirtualCamera monitorCam;
-    public CinemachineVirtualCamera playerCam;
+    public CinemachineCamera monitorCam;
+    public CinemachineCamera playerCam;
     public GameObject interactPrompt;
     public MinigameManager minigame;
 
