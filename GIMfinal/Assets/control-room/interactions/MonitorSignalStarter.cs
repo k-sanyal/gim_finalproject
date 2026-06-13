@@ -17,8 +17,8 @@ public class MonitorSignalStarter : MonoBehaviour
     [Header("Video")]
     public VideoPlayer signalVideoPlayer;
 
-    [Header("Next Events")]
-    public GameObject wowSignalPaper;
+    [Header("Signal Sequence")]
+    public SignalSequenceController signalSequenceController;
 
     private bool signalStarted = false;
 
@@ -30,15 +30,11 @@ public class MonitorSignalStarter : MonoBehaviour
         if (signalPlayingUI != null)
             signalPlayingUI.SetActive(false);
 
-        if (wowSignalPaper != null)
-            wowSignalPaper.SetActive(false);
-
         if (signalVideoPlayer != null)
         {
             signalVideoPlayer.playOnAwake = false;
-            signalVideoPlayer.isLooping = false;
+            signalVideoPlayer.isLooping = true;
             signalVideoPlayer.Stop();
-            signalVideoPlayer.loopPointReached += OnSignalVideoFinished;
         }
 
         if (playerCamera == null)
@@ -88,18 +84,11 @@ public class MonitorSignalStarter : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactDistance))
         {
-            // 이 스크립트가 붙은 오브젝트를 직접 맞췄거나,
-            // 그 자식 오브젝트를 맞췄을 때 true
             if (hit.transform == transform || hit.transform.IsChildOf(transform))
-            {
                 return true;
-            }
 
-            // 반대로 이 스크립트가 화면의 자식에 붙어 있고 부모를 맞추는 경우 대비
             if (transform.IsChildOf(hit.transform))
-            {
                 return true;
-            }
         }
 
         return false;
@@ -119,34 +108,39 @@ public class MonitorSignalStarter : MonoBehaviour
         {
             signalVideoPlayer.Stop();
             signalVideoPlayer.time = 0;
+            signalVideoPlayer.isLooping = true;
             signalVideoPlayer.Play();
 
-            Debug.Log("VideoPlayer Play called.");
+            Debug.Log("Loop signal video started.");
         }
         else
         {
             Debug.LogWarning("Signal Video Player is not assigned.");
         }
 
+        if (signalSequenceController != null)
+        {
+            signalSequenceController.StartSequence();
+        }
+        else
+        {
+            Debug.LogWarning("Signal Sequence Controller is not assigned.");
+        }
+
         Debug.Log("Signal monitoring started.");
     }
 
-    private void OnSignalVideoFinished(VideoPlayer vp)
-    {
-        if (signalPlayingUI != null)
-            signalPlayingUI.SetActive(false);
-
-        if (wowSignalPaper != null)
-            wowSignalPaper.SetActive(true);
-
-        Debug.Log("Signal monitoring finished. Wow Signal paper appeared.");
-    }
-
-    private void OnDestroy()
+    public void StopSignalVideo()
     {
         if (signalVideoPlayer != null)
         {
-            signalVideoPlayer.loopPointReached -= OnSignalVideoFinished;
+            signalVideoPlayer.isLooping = false;
+            signalVideoPlayer.Stop();
         }
+
+        if (signalPlayingUI != null)
+            signalPlayingUI.SetActive(false);
+
+        Debug.Log("Loop signal video stopped.");
     }
 }
