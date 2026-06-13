@@ -22,10 +22,10 @@ public class SignalSequenceController : MonoBehaviour
     public AudioSource printerAudioSource;
 
     [Header("Audio Clips")]
-    public AudioClip weakSignalClip;      // 약한 삐 소리
-    public AudioClip noiseClip;           // 지직/노이즈
-    public AudioClip strongSignalClip;    // 위잉위잉/강한 이상신호
-    public AudioClip printerClip;         // 프린터 소리
+    public AudioClip weakSignalClip;
+    public AudioClip noiseClip;
+    public AudioClip strongSignalClip;
+    public AudioClip printerClip;
 
     [Header("Final Event")]
     public GameObject wowSignalPaper;
@@ -52,15 +52,22 @@ public class SignalSequenceController : MonoBehaviour
 
         if (wowSignalPaper != null)
             wowSignalPaper.SetActive(false);
+
+        Debug.Log("SignalSequenceController ready.");
     }
 
     public void StartSequence()
     {
         if (sequenceStarted)
+        {
+            Debug.Log("Signal sequence already started.");
             return;
+        }
 
         sequenceStarted = true;
         StartCoroutine(SignalRoutine());
+
+        Debug.Log("Signal sequence coroutine started.");
     }
 
     private IEnumerator SignalRoutine()
@@ -91,19 +98,20 @@ public class SignalSequenceController : MonoBehaviour
         yield return new WaitForSeconds(Mathf.Max(0f, printerTime - strongSignalTime));
         ShowStatus("CHECK THE PRINTER");
 
-        // 시그널 감지 loop 영상 정지
         if (monitorSignalStarter != null)
         {
             monitorSignalStarter.StopSignalVideo();
         }
+        else
+        {
+            Debug.LogWarning("Monitor Signal Starter is not assigned.");
+        }
 
-        // 프린터 소리 재생
         if (printerAudioSource != null && printerClip != null)
         {
             printerAudioSource.PlayOneShot(printerClip);
         }
 
-        // Wow Signal 종이 등장
         if (wowSignalPaper != null)
         {
             wowSignalPaper.SetActive(true);
@@ -133,9 +141,14 @@ public class SignalSequenceController : MonoBehaviour
 
     private void SetMorning()
     {
-        if (morningView != null) morningView.SetActive(true);
-        if (eveningView != null) eveningView.SetActive(false);
-        if (nightView != null) nightView.SetActive(false);
+        if (morningView != null)
+            morningView.SetActive(true);
+
+        if (eveningView != null)
+            eveningView.SetActive(false);
+
+        if (nightView != null)
+            nightView.SetActive(false);
 
         if (directionalLight != null)
         {
@@ -151,9 +164,14 @@ public class SignalSequenceController : MonoBehaviour
 
     private void SetEvening()
     {
-        if (morningView != null) morningView.SetActive(false);
-        if (eveningView != null) eveningView.SetActive(true);
-        if (nightView != null) nightView.SetActive(false);
+        if (morningView != null)
+            morningView.SetActive(false);
+
+        if (eveningView != null)
+            eveningView.SetActive(true);
+
+        if (nightView != null)
+            nightView.SetActive(false);
 
         if (directionalLight != null)
         {
@@ -169,9 +187,14 @@ public class SignalSequenceController : MonoBehaviour
 
     private void SetNight()
     {
-        if (morningView != null) morningView.SetActive(false);
-        if (eveningView != null) eveningView.SetActive(false);
-        if (nightView != null) nightView.SetActive(true);
+        if (morningView != null)
+            morningView.SetActive(false);
+
+        if (eveningView != null)
+            eveningView.SetActive(false);
+
+        if (nightView != null)
+            nightView.SetActive(true);
 
         if (directionalLight != null)
         {

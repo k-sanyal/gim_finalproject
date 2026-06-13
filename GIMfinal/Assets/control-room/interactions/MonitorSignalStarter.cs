@@ -121,6 +121,7 @@ public class MonitorSignalStarter : MonoBehaviour
         if (signalSequenceController != null)
         {
             signalSequenceController.StartSequence();
+            Debug.Log("Signal sequence started from MonitorSignalStarter.");
         }
         else
         {
