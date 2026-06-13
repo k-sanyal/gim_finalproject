@@ -904,6 +904,7 @@ GameObject:
   m_Component:
   - component: {fileID: 272031912}
   - component: {fileID: 272031911}
+  - component: {fileID: 272031913}
   m_Layer: 0
   m_Name: CutSceneDirector
   m_TagString: Untagged
@@ -972,6 +973,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &272031913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 272031910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f18ae86411024a829929ed12768ef93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NewspaperSceneLoader
+  director: {fileID: 272031911}
 --- !u!4 &273794746 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 49037bda2b02c4240a14684085571d75, type: 3}
@@ -4345,8 +4359,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 993861684}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.058001854, y: 0.7016016, z: -0.057487875, w: -0.7078744}
-  m_LocalPosition: {x: -99.31, y: 20.43, z: -38.83}
+  m_LocalRotation: {x: 0.016642293, y: 0.7007247, z: -0.016354624, w: 0.7130502}
+  m_LocalPosition: {x: -23.7, y: 25.58, z: 77.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

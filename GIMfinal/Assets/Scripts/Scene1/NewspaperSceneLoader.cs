@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+public class NewspaperSceneLoader : MonoBehaviour
 {
     [SerializeField] private PlayableDirector director;
 
@@ -16,10 +16,9 @@ public class SceneLoader : MonoBehaviour
         {
             sceneLoaded = true;
 
-            StoryState.Chapter = 1; // Timeline1 끝났음
+            StoryState.Chapter = 2;
 
-            Debug.Log("씬 전환!");
-            SceneManager.LoadScene("Newspaper");
+            SceneManager.LoadScene("Office");
         }
     }
 }
