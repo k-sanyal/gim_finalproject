@@ -4,12 +4,17 @@ using Unity.Cinemachine;
 public class MonitorInteract : MonoBehaviour
 {
     public CinemachineCamera monitorCam;
-    public CinemachineCamera playerCam;
     public GameObject interactPrompt;
     public MinigameManager minigame;
 
     private bool playerNear = false;
     private bool isActive = false;
+
+    void Start()
+    {
+        monitorCam.Priority = -1;
+        if(interactPrompt != null) interactPrompt.SetActive(false);
+    }
 
     void Update()
     {
@@ -25,7 +30,7 @@ public class MonitorInteract : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             playerNear = true;
-            interactPrompt.SetActive(true);
+            if(interactPrompt != null) interactPrompt.SetActive(true);
         }
     }
 
@@ -34,24 +39,27 @@ public class MonitorInteract : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             playerNear = false;
-            interactPrompt.SetActive(false);
+            if(interactPrompt != null) interactPrompt.SetActive(false);
         }
     }
 
-    void EnterMonitor()
+    public void EnterMonitor()
     {
         isActive = true;
-        interactPrompt.SetActive(false);
+        if(interactPrompt != null) interactPrompt.SetActive(false);
         monitorCam.Priority = 20;
-        playerCam.Priority = 10;
         Invoke("StartMinigame", 1.2f);
     }
 
     public void ExitMonitor()
     {
         isActive = false;
-        monitorCam.Priority = 10;
-        playerCam.Priority = 20;
-        minigame.HideMinigame();
+        monitorCam.Priority = -1;
+        if(minigame != null) minigame.HideMinigame();
+    }
+
+    void StartMinigame()
+    {
+        if(minigame != null) minigame.ShowMinigame();
     }
 }

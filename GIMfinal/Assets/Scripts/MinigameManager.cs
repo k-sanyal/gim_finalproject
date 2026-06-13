@@ -29,7 +29,7 @@ public class MinigameManager : MonoBehaviour
 
     [Header("Audio")]
     //public AudioClip catchSound;
-    //public AudioClip wowSound;
+    public AudioClip wowSound;
     public AudioClip scanningLoop;
     private AudioSource audioSource;
 
@@ -119,10 +119,16 @@ public class MinigameManager : MonoBehaviour
     {
         gameActive = false;
         statusText.text = "Wow!";
-        yield return new WaitForSeconds(1.5f);
+        if(wowSound) audioSource.PlayOneShot(wowSound);
+        audioSource.Stop();
+
+        yield return new WaitForSeconds(2f);
+
         HideMinigame();
-        yield return new WaitForSeconds(0.5f);
-        if(timeline != null) timeline.Play(); // timeline.Play();
+
+        yield return new WaitForSeconds(1f);
+
+        if(timeline != null) timeline.Play();
     }
 
     public void ShowMinigame()
@@ -155,6 +161,6 @@ public class MinigameManager : MonoBehaviour
 
     void Start()
     {
-        ShowMinigame();
+        //ShowMinigame();
     }
 }
