@@ -26,6 +26,23 @@ public class InteractionManager : MonoBehaviour
 
     void Update()
     {
+        // 시그널 단계가 열리면 기존 조사 인터랙션 전체 비활성화
+        if (gameProgress != null && gameProgress.IsSignalPhaseUnlocked())
+        {
+            currentObject = null;
+
+            if (hoverPanel != null)
+                hoverPanel.SetActive(false);
+
+            // 혹시 상세창이 열린 상태에서 시그널 단계가 열리면 닫기
+            if (isDetailOpen)
+            {
+                ForceCloseDetail();
+            }
+
+            return;
+        }
+
         if (isDetailOpen)
         {
             if (Input.GetKeyDown(KeyCode.K))
@@ -67,56 +84,36 @@ public class InteractionManager : MonoBehaviour
 
     void ShowHover(InteractableObject obj)
     {
-        hoverPanel.SetActive(true);
+        if (hoverPanel == null || hoverText == null)
+            return;
 
-        if (obj.isMonitor && gameProgress != null && gameProgress.IsSignalPhaseUnlocked())
-        {
-            hoverText.text = obj.objectName + "\nK : Start Signal Monitoring";
-        }
-        else
-        {
-            hoverText.text = obj.objectName + "\nK : Inspect";
-        }
+        hoverPanel.SetActive(true);
+        hoverText.text = obj.objectName + "\nK : Inspect";
     }
 
     void HideHover()
     {
-        hoverPanel.SetActive(false);
+        if (hoverPanel != null)
+            hoverPanel.SetActive(false);
     }
 
     void OpenDetail(InteractableObject obj)
     {
+        // 시그널 단계가 열렸으면 상세창 열기 금지
+        if (gameProgress != null && gameProgress.IsSignalPhaseUnlocked())
+            return;
+
         isDetailOpen = true;
         openedObject = obj;
 
-        hoverPanel.SetActive(false);
-        detailPanel.SetActive(true);
+        if (hoverPanel != null)
+            hoverPanel.SetActive(false);
 
-        if (obj.isMonitor)
-        {
-            OpenMonitorDetail(obj);
-            return;
-        }
+        if (detailPanel != null)
+            detailPanel.SetActive(true);
 
         titleText.text = obj.objectName;
         bodyText.text = obj.detailDescription;
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-
-    void OpenMonitorDetail(InteractableObject obj)
-    {
-        titleText.text = obj.objectName;
-
-        if (gameProgress != null && gameProgress.IsSignalPhaseUnlocked())
-        {
-            bodyText.text = "Signal monitoring is now available.\nThe system is ready to begin scanning incoming radio data.";
-        }
-        else
-        {
-            bodyText.text = "The monitor is not ready yet.\nReview the observation materials first.";
-        }
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -126,9 +123,10 @@ public class InteractionManager : MonoBehaviour
     {
         isDetailOpen = false;
 
-        detailPanel.SetActive(false);
+        if (detailPanel != null)
+            detailPanel.SetActive(false);
 
-        if (openedObject != null && !openedObject.isMonitor)
+        if (openedObject != null)
         {
             if (gameProgress != null)
             {
@@ -137,6 +135,21 @@ public class InteractionManager : MonoBehaviour
         }
 
         openedObject = null;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+    void ForceCloseDetail()
+    {
+        isDetailOpen = false;
+        openedObject = null;
+
+        if (detailPanel != null)
+            detailPanel.SetActive(false);
+
+        if (hoverPanel != null)
+            hoverPanel.SetActive(false);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

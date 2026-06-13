@@ -15,6 +15,10 @@ public class GameProgressController : MonoBehaviour
 
     public void StartInfoPhase()
     {
+        // 이미 시그널 단계가 열렸으면 기존 조사 UI 다시 켜지지 않게 막음
+        if (signalPhaseUnlocked)
+            return;
+
         if (objectivePanel != null)
         {
             objectivePanel.SetActive(true);
@@ -23,37 +27,43 @@ public class GameProgressController : MonoBehaviour
         UpdateObjectiveText();
     }
 
-   public void RegisterViewedObject(InteractableObject obj)
-{
-    if (obj == null)
+    public void RegisterViewedObject(InteractableObject obj)
     {
-        Debug.LogWarning("RegisterViewedObject failed: obj is null");
-        return;
-    }
+        // 이미 시그널 단계가 열렸으면 더 이상 조사 등록 안 함
+        if (signalPhaseUnlocked)
+            return;
 
-    Debug.Log("RegisterViewedObject called: " + obj.objectName);
+        if (obj == null)
+        {
+            Debug.LogWarning("RegisterViewedObject failed: obj is null");
+            return;
+        }
 
-    if (obj.requiredForSignalProgress)
-    {
-        obj.hasBeenViewed = true;
-        Debug.Log(obj.objectName + " marked as viewed.");
-    }
-    else
-    {
-        Debug.Log(obj.objectName + " is not required for progress.");
-    }
+        Debug.Log("RegisterViewedObject called: " + obj.objectName);
 
-    CheckSignalPhaseUnlock();
-    UpdateObjectiveText();
-}
+        if (obj.requiredForSignalProgress)
+        {
+            obj.hasBeenViewed = true;
+            Debug.Log(obj.objectName + " marked as viewed.");
+        }
+        else
+        {
+            Debug.Log(obj.objectName + " is not required for progress.");
+        }
+
+        CheckSignalPhaseUnlock();
+        UpdateObjectiveText();
+    }
 
     void CheckSignalPhaseUnlock()
     {
-        if (signalPhaseUnlocked) return;
+        if (signalPhaseUnlocked)
+            return;
 
         foreach (InteractableObject obj in requiredObjects)
         {
-            if (obj == null) continue;
+            if (obj == null)
+                continue;
 
             if (!obj.hasBeenViewed)
             {
@@ -62,16 +72,25 @@ public class GameProgressController : MonoBehaviour
         }
 
         signalPhaseUnlocked = true;
+
+        // 4/4 완료 순간 기존 Objective UI 끄기
+        if (objectivePanel != null)
+            objectivePanel.SetActive(false);
+
         Debug.Log("Signal Phase Unlocked!");
     }
 
     void UpdateObjectiveText()
     {
-        if (objectiveText == null) return;
+        if (objectiveText == null)
+            return;
 
+        // 시그널 단계가 열리면 기존 조사 UI는 꺼진 상태 유지
         if (signalPhaseUnlocked)
         {
-            objectiveText.text = "Signal monitoring is now available.\nCheck the signal monitor.";
+            if (objectivePanel != null)
+                objectivePanel.SetActive(false);
+
             return;
         }
 
@@ -80,7 +99,8 @@ public class GameProgressController : MonoBehaviour
 
         foreach (InteractableObject obj in requiredObjects)
         {
-            if (obj == null) continue;
+            if (obj == null)
+                continue;
 
             totalCount++;
 
@@ -98,5 +118,11 @@ public class GameProgressController : MonoBehaviour
     public bool IsSignalPhaseUnlocked()
     {
         return signalPhaseUnlocked;
+    }
+
+    // InteractionManager에서 조사 가능 여부 확인할 때 사용
+    public bool CanInspectObjects()
+    {
+        return !signalPhaseUnlocked;
     }
 }
