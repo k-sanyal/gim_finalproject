@@ -19,29 +19,33 @@ public class InteractionManager : MonoBehaviour
     [Header("Game Progress")]
     public GameProgressController gameProgress;
 
+    [Header("Signal Start")]
+    public GameObject signalStartUI; // "E : 시그널 감지 시작" UI
+    public MonitorSignalStarter monitorSignalStarter;
+
     private InteractableObject currentObject;
     private InteractableObject openedObject;
 
     private bool isDetailOpen = false;
+    private bool signalStarted = false;
+
+    private void Start()
+    {
+        if (signalStartUI != null)
+            signalStartUI.SetActive(false);
+    }
 
     void Update()
     {
         // 시그널 단계가 열리면 기존 조사 인터랙션 전체 비활성화
         if (gameProgress != null && gameProgress.IsSignalPhaseUnlocked())
         {
-            currentObject = null;
-
-            if (hoverPanel != null)
-                hoverPanel.SetActive(false);
-
-            // 혹시 상세창이 열린 상태에서 시그널 단계가 열리면 닫기
-            if (isDetailOpen)
-            {
-                ForceCloseDetail();
-            }
-
+            HandleSignalStartPhase();
             return;
         }
+
+        if (signalStartUI != null)
+            signalStartUI.SetActive(false);
 
         if (isDetailOpen)
         {
@@ -58,6 +62,50 @@ public class InteractionManager : MonoBehaviour
         if (currentObject != null && Input.GetKeyDown(KeyCode.K))
         {
             OpenDetail(currentObject);
+        }
+    }
+
+    private void HandleSignalStartPhase()
+    {
+        currentObject = null;
+
+        if (hoverPanel != null)
+            hoverPanel.SetActive(false);
+
+        // 혹시 상세창이 열린 상태에서 시그널 단계가 열리면 닫기
+        if (isDetailOpen)
+        {
+            ForceCloseDetail();
+        }
+
+        if (signalStarted)
+        {
+            if (signalStartUI != null)
+                signalStartUI.SetActive(false);
+
+            return;
+        }
+
+        // 4개 조사 완료 후 E 안내 UI 표시
+        if (signalStartUI != null)
+            signalStartUI.SetActive(true);
+
+        // E 누르면 시그널 감지 시작
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            signalStarted = true;
+
+            if (signalStartUI != null)
+                signalStartUI.SetActive(false);
+
+            if (monitorSignalStarter != null)
+            {
+                monitorSignalStarter.StartSignalMonitoringFromOutside();
+            }
+            else
+            {
+                Debug.LogWarning("Monitor Signal Starter is not assigned in InteractionManager.");
+            }
         }
     }
 
@@ -112,8 +160,11 @@ public class InteractionManager : MonoBehaviour
         if (detailPanel != null)
             detailPanel.SetActive(true);
 
-        titleText.text = obj.objectName;
-        bodyText.text = obj.detailDescription;
+        if (titleText != null)
+            titleText.text = obj.objectName;
+
+        if (bodyText != null)
+            bodyText.text = obj.detailDescription;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

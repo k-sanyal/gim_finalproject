@@ -92,14 +92,19 @@ public class SignalSequenceController : MonoBehaviour
 
         yield return new WaitForSeconds(Mathf.Max(0f, nightTime - signalLostTime));
         SetNight();
-        ShowStatus("SCANNING CONTINUES...");
+        ShowStatus("SCANNING CONTINUES");
 
         yield return new WaitForSeconds(Mathf.Max(0f, strongSignalTime - nightTime));
         ShowStatus("STRONG NARROWBAND SIGNAL DETECTED");
         PlaySignalSound(strongSignalClip);
 
         yield return new WaitForSeconds(Mathf.Max(0f, printerTime - strongSignalTime));
-        ShowStatus("CHECK THE PRINTER");
+ShowStatus("Press P to print the Paper and check it");
+
+yield return new WaitForSeconds(1.5f);
+
+if (statusPanel != null)
+    statusPanel.SetActive(false);
 
         if (monitorSignalStarter != null)
         {

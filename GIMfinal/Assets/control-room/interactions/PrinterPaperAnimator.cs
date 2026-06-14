@@ -13,6 +13,10 @@ public class PrinterPaperAnimator : MonoBehaviour
     [Header("Animation")]
     public float printDuration = 3f;
 
+    [Header("Wow Paper UI")]
+    public WowSignalPaperUIInteraction wowPaperUI;
+    public float openUIDelayAfterPrint = 0.5f;
+
     [Header("Debug")]
     public bool testWithPKey = true;
 
@@ -109,6 +113,18 @@ public class PrinterPaperAnimator : MonoBehaviour
 
         Debug.Log("Final root position: " + transform.position);
         Debug.Log("Wow Signal paper printed.");
+
+        yield return new WaitForSeconds(openUIDelayAfterPrint);
+
+        if (wowPaperUI != null)
+        {
+            wowPaperUI.ShowPaper();
+            Debug.Log("Wow paper UI opened automatically.");
+        }
+        else
+        {
+            Debug.LogWarning("Wow Paper UI is not assigned in PrinterPaperAnimator.");
+        }
     }
 
     private void ResetPaperToStart()
@@ -117,8 +133,6 @@ public class PrinterPaperAnimator : MonoBehaviour
             return;
 
         transform.position = startPoint.position;
-
-        // 여기서도 회전 건드리지 말고 원래 각도 유지
         transform.rotation = originalRotation;
 
         if (paperVisual != null)

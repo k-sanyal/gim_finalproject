@@ -6,10 +6,6 @@ public class MonitorSignalStarter : MonoBehaviour
     [Header("Progress")]
     public GameProgressController progressController;
 
-    [Header("Camera")]
-    public Camera playerCamera;
-    public float interactDistance = 4f;
-
     [Header("UI")]
     public GameObject pressEUI;
     public GameObject signalPlayingUI;
@@ -20,7 +16,12 @@ public class MonitorSignalStarter : MonoBehaviour
     [Header("Signal Sequence")]
     public SignalSequenceController signalSequenceController;
 
+    [Header("Prompt Delay")]
+    public float eInputDelay = 1f;
+
     private bool signalStarted = false;
+    private bool promptShown = false;
+    private float promptShownTime = 0f;
 
     private void Start()
     {
@@ -37,9 +38,6 @@ public class MonitorSignalStarter : MonoBehaviour
             signalVideoPlayer.Stop();
         }
 
-        if (playerCamera == null)
-            playerCamera = Camera.main;
-
         Debug.Log("MonitorSignalStarter ready.");
     }
 
@@ -55,43 +53,36 @@ public class MonitorSignalStarter : MonoBehaviour
         }
 
         bool canStartSignal = progressController.IsSignalPhaseUnlocked();
-        bool lookingAtMonitor = IsLookingAtThisMonitor();
 
-        if (canStartSignal && lookingAtMonitor)
-        {
-            if (pressEUI != null)
-                pressEUI.SetActive(true);
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                StartSignalMonitoring();
-            }
-        }
-        else
+        if (!canStartSignal)
         {
             if (pressEUI != null)
                 pressEUI.SetActive(false);
+
+            promptShown = false;
+            return;
         }
-    }
 
-    private bool IsLookingAtThisMonitor()
-    {
-        if (playerCamera == null)
-            return false;
-
-        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-        RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, interactDistance))
+        // 시그널 단계가 처음 열렸을 때 UI 표시
+        if (!promptShown)
         {
-            if (hit.transform == transform || hit.transform.IsChildOf(transform))
-                return true;
+            promptShown = true;
+            promptShownTime = Time.time;
 
-            if (transform.IsChildOf(hit.transform))
-                return true;
+            if (pressEUI != null)
+                pressEUI.SetActive(true);
+
+            Debug.Log("Press E UI shown.");
         }
 
-        return false;
+        // UI가 조금 보인 뒤에만 E 입력 허용
+        if (Time.time - promptShownTime < eInputDelay)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            StartSignalMonitoring();
+        }
     }
 
     private void StartSignalMonitoring()
@@ -144,4 +135,12 @@ public class MonitorSignalStarter : MonoBehaviour
 
         Debug.Log("Loop signal video stopped.");
     }
+
+    public void StartSignalMonitoringFromOutside()
+{
+    if (signalStarted)
+        return;
+
+    StartSignalMonitoring();
+}
 }
