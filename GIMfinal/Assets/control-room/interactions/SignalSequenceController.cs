@@ -30,6 +30,9 @@ public class SignalSequenceController : MonoBehaviour
     [Header("Final Event")]
     public GameObject wowSignalPaper;
 
+    [Header("Printer Animation")]
+    public PrinterPaperAnimator printerPaperAnimator;
+
     [Header("Monitor Starter")]
     public MonitorSignalStarter monitorSignalStarter;
 
@@ -112,12 +115,21 @@ public class SignalSequenceController : MonoBehaviour
             printerAudioSource.PlayOneShot(printerClip);
         }
 
-        if (wowSignalPaper != null)
+        if (printerPaperAnimator != null)
         {
-            wowSignalPaper.SetActive(true);
+            printerPaperAnimator.StartPrint();
+        }
+        else
+        {
+            Debug.LogWarning("Printer Paper Animator is not assigned. Showing paper directly.");
+
+            if (wowSignalPaper != null)
+            {
+                wowSignalPaper.SetActive(true);
+            }
         }
 
-        Debug.Log("Signal sequence finished. Wow Signal paper appeared.");
+        Debug.Log("Signal sequence finished. Printer event started.");
     }
 
     private void ShowStatus(string message)
