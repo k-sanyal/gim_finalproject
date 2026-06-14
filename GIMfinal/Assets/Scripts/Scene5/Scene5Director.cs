@@ -21,13 +21,13 @@ public class Scene5Director : MonoBehaviour
         planetText.ShowText("a dish still listens.");
 
         yield return new WaitForSeconds(7f);
-        planetText.ShowText("72 seconds.\nThe universe spoke once.");
+        planetText.ShowText("72 seconds. The universe spoke once.");
 
         yield return new WaitForSeconds(10f);
-        planetText.ShowText("The signal was too precise to be noise.\nToo structured to be coincidence.");
+        planetText.ShowText("The signal was too precise to be noise. Too structured to be coincidence.");
 
-        yield return new WaitForSeconds(9f);
-        planetText.ShowText("We never responded.\nWe demolished the telescope two years later.\nThe origin remains unknown.");
+        yield return new WaitForSeconds(15f);
+        planetText.ShowText("We never responded. We demolished the telescope two years later. The origin remains unknown.");
 
         yield return new WaitForSeconds(13f);
         //finalText.StartSequence();
