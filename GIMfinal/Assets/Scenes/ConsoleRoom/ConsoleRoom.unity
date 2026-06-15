@@ -3618,7 +3618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &653211284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3641,6 +3641,10 @@ MonoBehaviour:
   signalsBeforeWow: 12
   catchRadius: 40
   fillSpeed: 2.5
+  printerPaperAnimator: {fileID: 170569912}
+  printerAudioSource: {fileID: 1641888636}
+  printerClip: {fileID: 8300000, guid: 499e716f0688bd44d843064571bc92b8, type: 3}
+  monitorSignalStarter: {fileID: 8754003796708889025}
   wowSound: {fileID: 8300000, guid: 88f8ad2b36fd69c47902b93e1b9a50b9, type: 3}
   scanningLoop: {fileID: 8300000, guid: f05406a556c9d4bb5a7133e9d46876e0, type: 3}
 --- !u!4 &653211285
@@ -3673,7 +3677,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -3682,7 +3686,7 @@ AudioSource:
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -3715,7 +3719,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -3771,7 +3775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &664993351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5528,6 +5532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60b6bbde4290330418779d5849e555e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SignalSequenceController
+  minigameManager: {fileID: 653211284}
   timeChangeController: {fileID: 1458006711}
   statusPanel: {fileID: 522247712}
   statusText: {fileID: 1284546465}
@@ -93959,8 +93964,8 @@ SceneRoots:
   - {fileID: 294762710}
   - {fileID: 1043907964}
   - {fileID: 1535769883}
-  - {fileID: 1641888637}
   - {fileID: 1458006712}
   - {fileID: 1110005323}
   - {fileID: 586704225}
   - {fileID: 1433980267}
+  - {fileID: 1641888637}

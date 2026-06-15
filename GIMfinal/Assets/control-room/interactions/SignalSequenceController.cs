@@ -4,6 +4,9 @@ using TMPro;
 
 public class SignalSequenceController : MonoBehaviour
 {
+    [Header("Minigame")] // for minigame completion check, if needed
+    public MinigameManager minigameManager;
+
     [Header("Time Change")]
     public TimeChangeController timeChangeController;
 
@@ -60,19 +63,40 @@ public class SignalSequenceController : MonoBehaviour
         Debug.Log("SignalSequenceController ready.");
     }
 
+
     public void StartSequence()
     {
-        if (sequenceStarted)
-        {
-            Debug.Log("Signal sequence already started.");
-            return;
-        }
-
+        if (sequenceStarted) return;
         sequenceStarted = true;
-        StartCoroutine(SignalRoutine());
 
-        Debug.Log("Signal sequence coroutine started.");
+        // start time change and audio as before
+        if (timeChangeController != null)
+            timeChangeController.StartTimeChange();
+
+        // show status
+        ShowStatus("SIGNAL MONITORING...");
+
+        // start minigame instead of auto sequence
+        if (minigameManager != null)
+            minigameManager.ShowMinigame();
+        else
+            StartCoroutine(SignalRoutine()); // fallback to old sequence
     }
+
+
+    // public void StartSequence() OLD
+    // {
+    //     if (sequenceStarted)
+    //     {
+    //         Debug.Log("Signal sequence already started.");
+    //         return;
+    //     }
+
+    //     sequenceStarted = true;
+    //     StartCoroutine(SignalRoutine());
+
+    //     Debug.Log("Signal sequence coroutine started.");
+    // }
 
     private IEnumerator SignalRoutine()
     {

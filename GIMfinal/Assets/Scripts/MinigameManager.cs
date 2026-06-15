@@ -21,6 +21,12 @@ public class MinigameManager : MonoBehaviour
     public float catchRadius = 40f;
     public float fillSpeed = 1.2f;
 
+    [Header("Printer")]
+    public PrinterPaperAnimator printerPaperAnimator;
+    public AudioSource printerAudioSource;
+    public AudioClip printerClip;
+    public MonitorSignalStarter monitorSignalStarter;
+
     private List<GameObject> activeSignals = new List<GameObject>();
     private int caughtCount = 0;
     private bool wowActive = false;
@@ -115,6 +121,7 @@ public class MinigameManager : MonoBehaviour
         statusText.text = "UNKNOWN SIGNAL DETECTED";
     }
 
+
     IEnumerator TriggerWowEnding()
     {
         gameActive = false;
@@ -126,10 +133,40 @@ public class MinigameManager : MonoBehaviour
 
         HideMinigame();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
+        // stop signal video
+        if(monitorSignalStarter != null)
+            monitorSignalStarter.StopSignalVideo();
+
+        // play printer sound
+        if(printerAudioSource != null && printerClip != null)
+            printerAudioSource.PlayOneShot(printerClip);
+
+        // start printer animation
+        if(printerPaperAnimator != null)
+            printerPaperAnimator.StartPrint();
+
+        // play timeline if assigned
         if(timeline != null) timeline.Play();
     }
+
+
+    // IEnumerator TriggerWowEnding() (OLD)
+    // {
+    //     gameActive = false;
+    //     statusText.text = "Wow!";
+    //     if(wowSound) audioSource.PlayOneShot(wowSound);
+    //     audioSource.Stop();
+
+    //     yield return new WaitForSeconds(2f);
+
+    //     HideMinigame();
+
+    //     yield return new WaitForSeconds(1f);
+
+    //     if(timeline != null) timeline.Play();
+    // }
 
     public void ShowMinigame()
     {
