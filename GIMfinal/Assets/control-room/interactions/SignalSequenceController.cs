@@ -44,7 +44,7 @@ public class SignalSequenceController : MonoBehaviour
     {
         if (timeChangeController != null)
         {
-            timeChangeController.SetDayInstant();
+            timeChangeController.ResetTimeChange();
         }
         else
         {
@@ -79,17 +79,20 @@ public class SignalSequenceController : MonoBehaviour
         ShowStatus("SIGNAL MONITORING...");
 
         if (timeChangeController != null)
-            timeChangeController.SetDayInstant();
+        {
+            timeChangeController.StartTimeChange();
+            Debug.Log("Time change started from SignalSequenceController.");
+        }
+        else
+        {
+            Debug.LogWarning("Time Change Controller is not assigned.");
+        }
 
         yield return new WaitForSeconds(weakSignalTime);
         ShowStatus("WEAK ANOMALY DETECTED");
         PlaySignalSound(weakSignalClip);
 
         yield return new WaitForSeconds(Mathf.Max(0f, eveningTime - weakSignalTime));
-
-        if (timeChangeController != null)
-            timeChangeController.TransitionToEvening();
-
         ShowStatus("SIGNAL FLUCTUATION DETECTED");
         PlaySignalSound(noiseClip);
 
@@ -97,10 +100,6 @@ public class SignalSequenceController : MonoBehaviour
         ShowStatus("SIGNAL LOST");
 
         yield return new WaitForSeconds(Mathf.Max(0f, nightTime - signalLostTime));
-
-        if (timeChangeController != null)
-            timeChangeController.TransitionToNight();
-
         ShowStatus("SCANNING CONTINUES");
 
         yield return new WaitForSeconds(Mathf.Max(0f, strongSignalTime - nightTime));
@@ -138,9 +137,7 @@ public class SignalSequenceController : MonoBehaviour
             Debug.LogWarning("Printer Paper Animator is not assigned. Showing paper directly.");
 
             if (wowSignalPaper != null)
-            {
                 wowSignalPaper.SetActive(true);
-            }
         }
 
         Debug.Log("Signal sequence finished. Printer event started.");
@@ -160,6 +157,6 @@ public class SignalSequenceController : MonoBehaviour
     private void PlaySignalSound(AudioClip clip)
     {
         if (signalAudioSource != null && clip != null)
-        signalAudioSource.PlayOneShot(clip);
+            signalAudioSource.PlayOneShot(clip);
     }
 }

@@ -1,311 +1,210 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class TimeChangeController : MonoBehaviour
 {
-    [Header("Window Quad Renderers")]
-    public Renderer dayQuadRenderer;
-    public Renderer eveningQuadRenderer;
-    public Renderer nightQuadRenderer;
-
-    [Header("Main Light")]
-    public Light directionalLight;
+    [Header("Window Video")]
+    public VideoPlayer windowVideoPlayer;
 
     [Header("Interior Lights")]
     public Light roomLight;
     public Light[] extraInteriorLights;
 
-    [Header("Day Settings")]
-    public float daySunIntensity = 1.2f;
-    public Color daySunColor = new Color(1f, 0.95f, 0.8f);
+    [Header("Light Settings")]
     public float dayRoomIntensity = 0.3f;
-    public float dayExtraInteriorIntensity = 0.2f;
-
-    [Header("Evening Settings")]
-    public float eveningSunIntensity = 0.65f;
-    public Color eveningSunColor = new Color(1f, 0.55f, 0.28f);
-    public float eveningRoomIntensity = 0.8f;
-    public float eveningExtraInteriorIntensity = 0.7f;
-
-    [Header("Night Settings")]
-    public float nightSunIntensity = 0.08f;
-    public Color nightSunColor = new Color(0.25f, 0.35f, 0.7f);
     public float nightRoomIntensity = 1.6f;
+
+    public float dayExtraInteriorIntensity = 0.2f;
     public float nightExtraInteriorIntensity = 1.4f;
 
-    [Header("Transition Duration")]
-    public float dayToEveningDuration = 6f;
-    public float eveningToNightDuration = 8f;
+    [Header("Transition")]
+    public float lightTransitionDuration = 15f;
 
-    [Header("Debug Test")]
-    public bool testWithKeys = true;
+    [Header("Debug")]
+    public bool testWithVKey = true;
 
-    private Material dayMat;
-    private Material eveningMat;
-    private Material nightMat;
-
-    private Coroutine currentTransition;
+    private Coroutine lightRoutine;
+    private bool hasStarted = false;
+    private bool isPrepared = false;
 
     private void Start()
     {
-        SetupMaterials();
-        SetDayInstant();
+        ApplyInteriorLight(dayRoomIntensity, dayExtraInteriorIntensity);
+
+        if (windowVideoPlayer != null)
+        {
+            windowVideoPlayer.playOnAwake = false;
+            windowVideoPlayer.isLooping = false;
+            windowVideoPlayer.waitForFirstFrame = true;
+
+            windowVideoPlayer.Stop();
+            windowVideoPlayer.time = 0;
+
+            StartCoroutine(PrepareFirstFrameRoutine());
+        }
+        else
+        {
+            Debug.LogWarning("Window Video Player is not assigned.");
+        }
 
         Debug.Log("TimeChangeController ready.");
     }
 
     private void Update()
     {
-        if (!testWithKeys)
+        if (!testWithVKey)
             return;
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.V))
         {
-            SetDayInstant();
+            StartTimeChange();
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.B))
         {
-            TransitionToEvening();
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            TransitionToNight();
+            ResetTimeChange();
         }
     }
 
-    private void SetupMaterials()
+    private IEnumerator PrepareFirstFrameRoutine()
     {
-        if (dayQuadRenderer != null)
+        if (windowVideoPlayer == null)
+            yield break;
+
+        isPrepared = false;
+
+        windowVideoPlayer.Prepare();
+
+        while (!windowVideoPlayer.isPrepared)
         {
-            dayQuadRenderer.gameObject.SetActive(true);
-            dayMat = dayQuadRenderer.material;
-            dayMat.renderQueue = 3002;
+            yield return null;
         }
 
-        if (eveningQuadRenderer != null)
+        // 첫 프레임을 RenderTexture에 실제로 그리기 위해 잠깐 재생
+        windowVideoPlayer.time = 0;
+        windowVideoPlayer.Play();
+
+        yield return null;
+        yield return null;
+
+        windowVideoPlayer.Pause();
+        windowVideoPlayer.time = 0;
+
+        isPrepared = true;
+
+        Debug.Log("Window video first frame prepared. Day image is displayed.");
+    }
+
+    public void StartTimeChange()
+    {
+        if (hasStarted)
         {
-            eveningQuadRenderer.gameObject.SetActive(true);
-            eveningMat = eveningQuadRenderer.material;
-            eveningMat.renderQueue = 3001;
+            Debug.Log("Time change already started.");
+            return;
         }
 
-        if (nightQuadRenderer != null)
-        {
-            nightQuadRenderer.gameObject.SetActive(true);
-            nightMat = nightQuadRenderer.material;
-            nightMat.renderQueue = 3000;
-        }
-    }
+        hasStarted = true;
 
-    public void SetDayInstant()
-    {
-        if (currentTransition != null)
+        if (windowVideoPlayer != null)
         {
-            StopCoroutine(currentTransition);
-            currentTransition = null;
+            StartCoroutine(PlayTimeVideoRoutine());
         }
 
-        SetAlpha(dayMat, 1f);
-        SetAlpha(eveningMat, 0f);
-        SetAlpha(nightMat, 0f);
+        if (lightRoutine != null)
+            StopCoroutine(lightRoutine);
 
-        ApplyLightSettings(
-            daySunIntensity,
-            daySunColor,
-            dayRoomIntensity,
-            dayExtraInteriorIntensity
-        );
-
-        Debug.Log("Time set instantly: Day");
+        lightRoutine = StartCoroutine(ChangeInteriorLightRoutine());
     }
 
-    public void TransitionToEvening()
+    private IEnumerator PlayTimeVideoRoutine()
     {
-        StartNewTransition(TransitionRoutine(
-            dayFrom: GetAlpha(dayMat),
-            dayTo: 0f,
+        if (windowVideoPlayer == null)
+            yield break;
 
-            eveningFrom: GetAlpha(eveningMat),
-            eveningTo: 1f,
+        if (!isPrepared)
+        {
+            while (!isPrepared)
+                yield return null;
+        }
 
-            nightFrom: GetAlpha(nightMat),
-            nightTo: 0f,
+        windowVideoPlayer.Stop();
+        windowVideoPlayer.time = 0;
 
-            sunTo: eveningSunIntensity,
-            sunColorTo: eveningSunColor,
+        yield return null;
 
-            roomTo: eveningRoomIntensity,
-            extraTo: eveningExtraInteriorIntensity,
+        windowVideoPlayer.Play();
 
-            duration: dayToEveningDuration,
-            label: "Evening"
-        ));
+        Debug.Log("Window time video started.");
     }
 
-    public void TransitionToNight()
+    public void ResetTimeChange()
     {
-        StartNewTransition(TransitionRoutine(
-            dayFrom: GetAlpha(dayMat),
-            dayTo: 0f,
+        hasStarted = false;
 
-            eveningFrom: GetAlpha(eveningMat),
-            eveningTo: 0f,
+        if (lightRoutine != null)
+        {
+            StopCoroutine(lightRoutine);
+            lightRoutine = null;
+        }
 
-            nightFrom: GetAlpha(nightMat),
-            nightTo: 1f,
+        ApplyInteriorLight(dayRoomIntensity, dayExtraInteriorIntensity);
 
-            sunTo: nightSunIntensity,
-            sunColorTo: nightSunColor,
+        if (windowVideoPlayer != null)
+        {
+            StartCoroutine(PrepareFirstFrameRoutine());
+        }
 
-            roomTo: nightRoomIntensity,
-            extraTo: nightExtraInteriorIntensity,
-
-            duration: eveningToNightDuration,
-            label: "Night"
-        ));
+        Debug.Log("Time change reset to day.");
     }
 
-    private void StartNewTransition(IEnumerator routine)
-    {
-        if (currentTransition != null)
-            StopCoroutine(currentTransition);
-
-        currentTransition = StartCoroutine(routine);
-    }
-
-    private IEnumerator TransitionRoutine(
-        float dayFrom,
-        float dayTo,
-        float eveningFrom,
-        float eveningTo,
-        float nightFrom,
-        float nightTo,
-        float sunTo,
-        Color sunColorTo,
-        float roomTo,
-        float extraTo,
-        float duration,
-        string label
-    )
+    private IEnumerator ChangeInteriorLightRoutine()
     {
         float timer = 0f;
 
-        float sunFrom = directionalLight != null ? directionalLight.intensity : sunTo;
-        Color sunColorFrom = directionalLight != null ? directionalLight.color : sunColorTo;
+        float startRoomIntensity = roomLight != null ? roomLight.intensity : dayRoomIntensity;
+        float startExtraIntensity = GetCurrentExtraInteriorIntensity();
 
-        float roomFrom = roomLight != null ? roomLight.intensity : roomTo;
-        float extraFrom = GetCurrentExtraInteriorIntensity();
-
-        while (timer < duration)
+        while (timer < lightTransitionDuration)
         {
             timer += Time.deltaTime;
 
-            float t = Mathf.Clamp01(timer / duration);
+            float t = Mathf.Clamp01(timer / lightTransitionDuration);
             float smoothT = Mathf.SmoothStep(0f, 1f, t);
 
-            SetAlpha(dayMat, Mathf.Lerp(dayFrom, dayTo, smoothT));
-            SetAlpha(eveningMat, Mathf.Lerp(eveningFrom, eveningTo, smoothT));
-            SetAlpha(nightMat, Mathf.Lerp(nightFrom, nightTo, smoothT));
+            float roomIntensity = Mathf.Lerp(startRoomIntensity, nightRoomIntensity, smoothT);
+            float extraIntensity = Mathf.Lerp(startExtraIntensity, nightExtraInteriorIntensity, smoothT);
 
-            if (directionalLight != null)
-            {
-                directionalLight.intensity = Mathf.Lerp(sunFrom, sunTo, smoothT);
-                directionalLight.color = Color.Lerp(sunColorFrom, sunColorTo, smoothT);
-            }
-
-            if (roomLight != null)
-            {
-                roomLight.intensity = Mathf.Lerp(roomFrom, roomTo, smoothT);
-            }
-
-            SetExtraInteriorLights(Mathf.Lerp(extraFrom, extraTo, smoothT));
+            ApplyInteriorLight(roomIntensity, extraIntensity);
 
             yield return null;
         }
 
-        SetAlpha(dayMat, dayTo);
-        SetAlpha(eveningMat, eveningTo);
-        SetAlpha(nightMat, nightTo);
+        ApplyInteriorLight(nightRoomIntensity, nightExtraInteriorIntensity);
+        lightRoutine = null;
 
-        ApplyLightSettings(sunTo, sunColorTo, roomTo, extraTo);
-
-        currentTransition = null;
-
-        Debug.Log("Time transition finished: " + label);
+        Debug.Log("Interior light transition finished.");
     }
 
-    private void ApplyLightSettings(float sunIntensity, Color sunColor, float roomIntensity, float extraIntensity)
+    private void ApplyInteriorLight(float roomIntensity, float extraIntensity)
     {
-        if (directionalLight != null)
-        {
-            directionalLight.intensity = sunIntensity;
-            directionalLight.color = sunColor;
-        }
-
         if (roomLight != null)
-        {
             roomLight.intensity = roomIntensity;
-        }
 
-        SetExtraInteriorLights(extraIntensity);
-    }
-
-    private void SetAlpha(Material mat, float alpha)
-    {
-        if (mat == null)
-            return;
-
-        alpha = Mathf.Clamp01(alpha);
-
-        // Built-in Unlit/Transparent usually uses _Color.
-        if (mat.HasProperty("_Color"))
-        {
-            Color color = mat.GetColor("_Color");
-            color.a = alpha;
-            mat.SetColor("_Color", color);
-        }
-
-        // URP Unlit usually uses _BaseColor.
-        if (mat.HasProperty("_BaseColor"))
-        {
-            Color baseColor = mat.GetColor("_BaseColor");
-            baseColor.a = alpha;
-            mat.SetColor("_BaseColor", baseColor);
-        }
-    }
-
-    private float GetAlpha(Material mat)
-    {
-        if (mat == null)
-            return 0f;
-
-        if (mat.HasProperty("_Color"))
-            return mat.GetColor("_Color").a;
-
-        if (mat.HasProperty("_BaseColor"))
-            return mat.GetColor("_BaseColor").a;
-
-        return 0f;
-    }
-
-    private void SetExtraInteriorLights(float intensity)
-    {
         if (extraInteriorLights == null)
             return;
 
         foreach (Light light in extraInteriorLights)
         {
             if (light != null)
-                light.intensity = intensity;
+                light.intensity = extraIntensity;
         }
     }
 
     private float GetCurrentExtraInteriorIntensity()
     {
         if (extraInteriorLights == null || extraInteriorLights.Length == 0)
-            return 0f;
+            return dayExtraInteriorIntensity;
 
         foreach (Light light in extraInteriorLights)
         {
@@ -313,6 +212,6 @@ public class TimeChangeController : MonoBehaviour
                 return light.intensity;
         }
 
-        return 0f;
+        return dayExtraInteriorIntensity;
     }
 }
