@@ -39,6 +39,9 @@ public class MinigameManager : MonoBehaviour
     public AudioClip scanningLoop;
     private AudioSource audioSource;
 
+    [Header("Camera")]
+    public Camera monitorCamera;
+
     [Header("Canvas")]
     public GameObject minigameCanvas;
 
@@ -55,7 +58,14 @@ public class MinigameManager : MonoBehaviour
 
     void MoveCrosshair()
     {
-        crosshair.position = Input.mousePosition;
+        Vector2 localPoint;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            signalContainer.parent.GetComponent<RectTransform>(),
+            Input.mousePosition,
+            monitorCamera,
+            out localPoint
+        );
+        crosshair.localPosition = localPoint;
     }
 
     void CheckSignalProximity()
@@ -63,9 +73,10 @@ public class MinigameManager : MonoBehaviour
         foreach(var sig in activeSignals)
         {
             if(sig == null) continue;
+
             float dist = Vector2.Distance(
-                crosshair.position,
-                sig.GetComponent<RectTransform>().position
+                crosshair.localPosition,
+                sig.GetComponent<RectTransform>().localPosition
             );
 
             if(dist < catchRadius)
@@ -137,13 +148,11 @@ public class MinigameManager : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        HideMinigame();
-
-        yield return new WaitForSeconds(0.5f);
-
-        // hand back control to SignalSequenceController
+        // call BEFORE HideMinigame
         if(signalSequenceController != null)
             signalSequenceController.StartWowFoundSequence();
+
+        HideMinigame();
     }
 
 

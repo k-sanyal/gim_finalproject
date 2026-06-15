@@ -7,6 +7,11 @@ public class SignalSequenceController : MonoBehaviour
     [Header("Minigame")] // for minigame completion check, if needed
     public MinigameManager minigameManager;
 
+    [Header("Camera")]
+    public Camera playerCamera;
+    public Camera monitorCamera;
+    public PlayerController playerLookScript;
+
     [Header("Time Change")]
     public TimeChangeController timeChangeController;
 
@@ -79,19 +84,23 @@ public class SignalSequenceController : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        if (statusPanel != null)
+        if(statusPanel != null)
             statusPanel.SetActive(false);
 
-        if (monitorSignalStarter != null)
+        if(monitorSignalStarter != null)
             monitorSignalStarter.StopSignalVideo();
 
-        if (printerAudioSource != null && printerClip != null)
+        if(printerAudioSource != null && printerClip != null)
             printerAudioSource.PlayOneShot(printerClip);
 
-        if (printerPaperAnimator != null)
+        if(printerPaperAnimator != null)
             printerPaperAnimator.StartPrint();
-        else if (wowSignalPaper != null)
+        else if(wowSignalPaper != null)
             wowSignalPaper.SetActive(true);
+
+        // switch back to player camera after printer starts
+        yield return new WaitForSeconds(1f);
+        MoveToPlayer();
     }
 
 
@@ -109,7 +118,6 @@ public class SignalSequenceController : MonoBehaviour
 
     IEnumerator DelayedMinigameStart()
     {
-        // show signal monitoring for 8 seconds first
         yield return new WaitForSeconds(3f);
         ShowStatus("WEAK ANOMALY DETECTED");
         PlaySignalSound(weakSignalClip);
@@ -123,11 +131,15 @@ public class SignalSequenceController : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        // hide status then start minigame
-        if (statusPanel != null)
+        // switch to monitor camera
+        MoveToMonitor();
+
+        yield return new WaitForSeconds(0.5f);
+
+        if(statusPanel != null)
             statusPanel.SetActive(false);
 
-        if (minigameManager != null)
+        if(minigameManager != null)
             minigameManager.ShowMinigame();
         else
             StartCoroutine(SignalRoutine());
@@ -232,5 +244,19 @@ public class SignalSequenceController : MonoBehaviour
     {
         if (signalAudioSource != null && clip != null)
             signalAudioSource.PlayOneShot(clip);
+    }
+    void MoveToMonitor()
+    {
+        if(playerCamera != null) playerCamera.enabled = false;
+        if(monitorCamera != null) monitorCamera.enabled = true;
+        if(playerLookScript != null) playerLookScript.enabled = false;
+    }
+
+    void MoveToPlayer()
+    {
+        Debug.Log("MoveToPlayer called");
+        if(monitorCamera != null) monitorCamera.enabled = false;
+        if(playerCamera != null) playerCamera.enabled = true;
+        if(playerLookScript != null) playerLookScript.enabled = true;
     }
 }

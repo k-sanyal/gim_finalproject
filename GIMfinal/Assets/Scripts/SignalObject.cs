@@ -18,7 +18,7 @@ public class SignalObject : MonoBehaviour
         GetComponent<RectTransform>().sizeDelta = new Vector2(size, size);
         StartCoroutine(Pulse());
 
-        if(!wow) StartCoroutine(FadeOut(Random.Range(6f, 12f)));
+        if(!wow) StartCoroutine(FadeOut(Random.Range(15f, 25f))); // increased from 6-12
     }
 
     IEnumerator Pulse()
@@ -37,11 +37,12 @@ public class SignalObject : MonoBehaviour
     IEnumerator FadeOut(float delay)
     {
         yield return new WaitForSeconds(delay);
+        // increase fade time
         float t = 0f;
         Color c = img.color;
         while(t < 1f)
         {
-            t += Time.deltaTime;
+            t += Time.deltaTime * 0.3f; // slower fade
             img.color = new Color(c.r, c.g, c.b, Mathf.Lerp(1f, 0f, t));
             yield return null;
         }
