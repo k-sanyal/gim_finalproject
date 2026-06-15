@@ -4,14 +4,8 @@ using TMPro;
 
 public class SignalSequenceController : MonoBehaviour
 {
-    [Header("Window Time Views")]
-    public GameObject morningView;
-    public GameObject eveningView;
-    public GameObject nightView;
-
-    [Header("Lights")]
-    public Light directionalLight;
-    public Light roomLight;
+    [Header("Time Change")]
+    public TimeChangeController timeChangeController;
 
     [Header("Status UI")]
     public GameObject statusPanel;
@@ -48,7 +42,14 @@ public class SignalSequenceController : MonoBehaviour
 
     private void Start()
     {
-        SetMorning();
+        if (timeChangeController != null)
+        {
+            timeChangeController.SetDayInstant();
+        }
+        else
+        {
+            Debug.LogWarning("Time Change Controller is not assigned.");
+        }
 
         if (statusPanel != null)
             statusPanel.SetActive(false);
@@ -76,14 +77,19 @@ public class SignalSequenceController : MonoBehaviour
     private IEnumerator SignalRoutine()
     {
         ShowStatus("SIGNAL MONITORING...");
-        SetMorning();
+
+        if (timeChangeController != null)
+            timeChangeController.SetDayInstant();
 
         yield return new WaitForSeconds(weakSignalTime);
         ShowStatus("WEAK ANOMALY DETECTED");
         PlaySignalSound(weakSignalClip);
 
         yield return new WaitForSeconds(Mathf.Max(0f, eveningTime - weakSignalTime));
-        SetEvening();
+
+        if (timeChangeController != null)
+            timeChangeController.TransitionToEvening();
+
         ShowStatus("SIGNAL FLUCTUATION DETECTED");
         PlaySignalSound(noiseClip);
 
@@ -91,7 +97,10 @@ public class SignalSequenceController : MonoBehaviour
         ShowStatus("SIGNAL LOST");
 
         yield return new WaitForSeconds(Mathf.Max(0f, nightTime - signalLostTime));
-        SetNight();
+
+        if (timeChangeController != null)
+            timeChangeController.TransitionToNight();
+
         ShowStatus("SCANNING CONTINUES");
 
         yield return new WaitForSeconds(Mathf.Max(0f, strongSignalTime - nightTime));
@@ -99,12 +108,12 @@ public class SignalSequenceController : MonoBehaviour
         PlaySignalSound(strongSignalClip);
 
         yield return new WaitForSeconds(Mathf.Max(0f, printerTime - strongSignalTime));
-ShowStatus("Press P to print the Paper and check it");
+        ShowStatus("Press P to check the Paper");
 
-yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.5f);
 
-if (statusPanel != null)
-    statusPanel.SetActive(false);
+        if (statusPanel != null)
+            statusPanel.SetActive(false);
 
         if (monitorSignalStarter != null)
         {
@@ -151,77 +160,6 @@ if (statusPanel != null)
     private void PlaySignalSound(AudioClip clip)
     {
         if (signalAudioSource != null && clip != null)
-        {
-            signalAudioSource.PlayOneShot(clip);
-        }
-    }
-
-    private void SetMorning()
-    {
-        if (morningView != null)
-            morningView.SetActive(true);
-
-        if (eveningView != null)
-            eveningView.SetActive(false);
-
-        if (nightView != null)
-            nightView.SetActive(false);
-
-        if (directionalLight != null)
-        {
-            directionalLight.intensity = 1.2f;
-            directionalLight.color = new Color(1f, 0.95f, 0.8f);
-        }
-
-        if (roomLight != null)
-            roomLight.intensity = 1f;
-
-        Debug.Log("Time changed: Morning");
-    }
-
-    private void SetEvening()
-    {
-        if (morningView != null)
-            morningView.SetActive(false);
-
-        if (eveningView != null)
-            eveningView.SetActive(true);
-
-        if (nightView != null)
-            nightView.SetActive(false);
-
-        if (directionalLight != null)
-        {
-            directionalLight.intensity = 0.65f;
-            directionalLight.color = new Color(1f, 0.55f, 0.28f);
-        }
-
-        if (roomLight != null)
-            roomLight.intensity = 0.55f;
-
-        Debug.Log("Time changed: Evening");
-    }
-
-    private void SetNight()
-    {
-        if (morningView != null)
-            morningView.SetActive(false);
-
-        if (eveningView != null)
-            eveningView.SetActive(false);
-
-        if (nightView != null)
-            nightView.SetActive(true);
-
-        if (directionalLight != null)
-        {
-            directionalLight.intensity = 0.15f;
-            directionalLight.color = new Color(0.25f, 0.35f, 0.7f);
-        }
-
-        if (roomLight != null)
-            roomLight.intensity = 0.25f;
-
-        Debug.Log("Time changed: Night");
+        signalAudioSource.PlayOneShot(clip);
     }
 }
