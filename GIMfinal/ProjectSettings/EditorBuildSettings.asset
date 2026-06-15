@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Newspaper.unity
     guid: 6db551fd8a94d457cb38aa1d33e73ab1
+  - enabled: 1
+    path: Assets/Scenes/ConsoleRoom/ConsoleRoom.unity
+    guid: 2382dddb58adbfe4586f9c7057783a2c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -773,8 +773,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Robert Dixon
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
-  m_sharedMaterial: {fileID: -8396409219748735052, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1212,6 +1212,10 @@ PlayableDirector:
     value: {fileID: 820109287}
   - key: {fileID: 4946292171364481465, guid: 21816d7bc19854e0c8110dbfacb2ff4d, type: 2}
     value: {fileID: 820109289}
+  - key: {fileID: -3025374136353555562, guid: 21816d7bc19854e0c8110dbfacb2ff4d, type: 2}
+    value: {fileID: 1643507574}
+  - key: {fileID: -1179311576022447379, guid: 21816d7bc19854e0c8110dbfacb2ff4d, type: 2}
+    value: {fileID: 1643507573}
   m_ExposedReferences:
     m_References:
     - 255b9a7b61fef45f4b9a4dbb226a766a: {fileID: 1304610630}
@@ -4806,8 +4810,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Director, Ohio State Radio Observatory
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
-  m_sharedMaterial: {fileID: -8396409219748735052, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4831,8 +4835,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4870,7 +4874,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 38.78392, w: 27.382671}
+  m_margin: {x: -50.886475, y: 0, z: 38.78392, w: 27.382671}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5015,8 +5019,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 993861684}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.015383136, y: 0.93931276, z: -0.042489663, w: 0.34007278}
-  m_LocalPosition: {x: -101.284, y: 20.51, z: -37.34}
+  m_LocalRotation: {x: -0.058001854, y: 0.7016016, z: -0.057487875, w: -0.7078744}
+  m_LocalPosition: {x: -99.31, y: 20.43, z: -38.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5575,10 +5579,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SETI Research Associate
+  m_text: Astronomer
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
-  m_sharedMaterial: {fileID: -8396409219748735052, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5602,8 +5606,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -7077,10 +7081,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Ladies and gentlemen,
 
-    Today marks a historic moment for all of us.
-
-    Today,
-    we proudly inaugurate the SETI Program, dedicated to the search for ...'
+    Today, we proudly inaugurate the SETI Program,
+    dedicated to the search for ...'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7219,8 +7221,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Robert Dixon
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
-  m_sharedMaterial: {fileID: -8396409219748735052, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -7985,8 +7987,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Jerry Ehman
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
-  m_sharedMaterial: {fileID: -8396409219748735052, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -25195,8 +25197,138 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0210570d87982ef43b61e63546a2f64e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1643507574}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0210570d87982ef43b61e63546a2f64e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1643507573}
   m_SourcePrefab: {fileID: 100100000, guid: 0210570d87982ef43b61e63546a2f64e, type: 3}
+--- !u!1 &1643507572 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0210570d87982ef43b61e63546a2f64e, type: 3}
+  m_PrefabInstance: {fileID: 1643507571}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1643507573
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643507572}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!82 &1643507574
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643507572}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &1644416404 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 746f14ef6de4e48c1864ca339fbe48fb, type: 3}
@@ -25370,8 +25502,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Director, Ohio State Radio Observatory
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
-  m_sharedMaterial: {fileID: -8396409219748735052, guid: 8c157ba3fb4b443cea5de4f69b19ffab, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
+  m_sharedMaterial: {fileID: 2140474, guid: 8a89fa14b10d46a99122fd4f73fca9a2, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -25395,8 +25527,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -25434,7 +25566,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 38.78392, w: 27.382671}
+  m_margin: {x: -41.987213, y: 0, z: 38.78392, w: 27.382671}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
