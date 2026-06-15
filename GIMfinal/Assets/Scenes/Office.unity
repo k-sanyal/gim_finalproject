@@ -565,7 +565,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60.000004
   orthographic: 0
@@ -1816,6 +1816,7 @@ GameObject:
   - component: {fileID: 623506576}
   - component: {fileID: 623506575}
   - component: {fileID: 623506577}
+  - component: {fileID: 623506578}
   m_Layer: 0
   m_Name: SceneLoader
   m_TagString: Untagged
@@ -1865,6 +1866,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::OfficeCutsceneManager
   timeline1: {fileID: 613463122}
   timeline2: {fileID: 1944045704}
+--- !u!114 &623506578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623506574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 230ab57ee313d4ec294366ca5a6caedd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConsoleRoomLoader
+  director: {fileID: 1944045704}
 --- !u!1 &630334772
 GameObject:
   m_ObjectHideFlags: 0
