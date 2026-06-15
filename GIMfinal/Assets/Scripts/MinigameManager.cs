@@ -39,6 +39,12 @@ public class MinigameManager : MonoBehaviour
     public AudioClip scanningLoop;
     private AudioSource audioSource;
 
+    [Header("Canvas")]
+    public GameObject minigameCanvas;
+
+    [Header("Signal Sequence")]
+    public SignalSequenceController signalSequenceController;
+
     void Update()
     {
         if(!gameActive) return;
@@ -135,20 +141,9 @@ public class MinigameManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        // stop signal video
-        if(monitorSignalStarter != null)
-            monitorSignalStarter.StopSignalVideo();
-
-        // play printer sound
-        if(printerAudioSource != null && printerClip != null)
-            printerAudioSource.PlayOneShot(printerClip);
-
-        // start printer animation
-        if(printerPaperAnimator != null)
-            printerPaperAnimator.StartPrint();
-
-        // play timeline if assigned
-        if(timeline != null) timeline.Play();
+        // hand back control to SignalSequenceController
+        if(signalSequenceController != null)
+            signalSequenceController.StartWowFoundSequence();
     }
 
 
@@ -170,6 +165,8 @@ public class MinigameManager : MonoBehaviour
 
     public void ShowMinigame()
     {
+        if(minigameCanvas != null) minigameCanvas.SetActive(true);
+
         gameObject.SetActive(true);
         gameActive = true;
         caughtCount = 0;
@@ -194,6 +191,8 @@ public class MinigameManager : MonoBehaviour
         foreach(var s in activeSignals)
             if(s != null) Destroy(s);
         activeSignals.Clear();
+
+        if(minigameCanvas != null) minigameCanvas.SetActive(false);
     }
 
     void Start()

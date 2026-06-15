@@ -63,24 +63,74 @@ public class SignalSequenceController : MonoBehaviour
         Debug.Log("SignalSequenceController ready.");
     }
 
+    public void StartWowFoundSequence()
+    {
+        StartCoroutine(WowFoundRoutine());
+    }
+
+    IEnumerator WowFoundRoutine()
+    {
+        ShowStatus("STRONG NARROWBAND SIGNAL DETECTED");
+        PlaySignalSound(strongSignalClip);
+
+        yield return new WaitForSeconds(4f);
+
+        ShowStatus("SIGNAL LOCKED — 1420 MHz");
+
+        yield return new WaitForSeconds(2f);
+
+        if (statusPanel != null)
+            statusPanel.SetActive(false);
+
+        if (monitorSignalStarter != null)
+            monitorSignalStarter.StopSignalVideo();
+
+        if (printerAudioSource != null && printerClip != null)
+            printerAudioSource.PlayOneShot(printerClip);
+
+        if (printerPaperAnimator != null)
+            printerPaperAnimator.StartPrint();
+        else if (wowSignalPaper != null)
+            wowSignalPaper.SetActive(true);
+    }
+
 
     public void StartSequence()
     {
         if (sequenceStarted) return;
         sequenceStarted = true;
 
-        // start time change and audio as before
         if (timeChangeController != null)
             timeChangeController.StartTimeChange();
 
-        // show status
         ShowStatus("SIGNAL MONITORING...");
+        StartCoroutine(DelayedMinigameStart());
+    }
 
-        // start minigame instead of auto sequence
+    IEnumerator DelayedMinigameStart()
+    {
+        // show signal monitoring for 8 seconds first
+        yield return new WaitForSeconds(3f);
+        ShowStatus("WEAK ANOMALY DETECTED");
+        PlaySignalSound(weakSignalClip);
+
+        yield return new WaitForSeconds(3f);
+        ShowStatus("SIGNAL FLUCTUATION DETECTED");
+        PlaySignalSound(noiseClip);
+
+        yield return new WaitForSeconds(2f);
+        ShowStatus("SCANNING...");
+
+        yield return new WaitForSeconds(2f);
+
+        // hide status then start minigame
+        if (statusPanel != null)
+            statusPanel.SetActive(false);
+
         if (minigameManager != null)
             minigameManager.ShowMinigame();
         else
-            StartCoroutine(SignalRoutine()); // fallback to old sequence
+            StartCoroutine(SignalRoutine());
     }
 
 

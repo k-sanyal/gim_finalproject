@@ -3647,6 +3647,8 @@ MonoBehaviour:
   monitorSignalStarter: {fileID: 8754003796708889025}
   wowSound: {fileID: 8300000, guid: 88f8ad2b36fd69c47902b93e1b9a50b9, type: 3}
   scanningLoop: {fileID: 8300000, guid: f05406a556c9d4bb5a7133e9d46876e0, type: 3}
+  minigameCanvas: {fileID: 1303413785}
+  signalSequenceController: {fileID: 0}
 --- !u!4 &653211285
 Transform:
   m_ObjectHideFlags: 0
