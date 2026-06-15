@@ -4,7 +4,7 @@ using TMPro;
 
 public class SignalSequenceController : MonoBehaviour
 {
-    [Header("Minigame")] // for minigame completion check, if needed
+    [Header("Minigame")]
     public MinigameManager minigameManager;
 
     [Header("Camera")]
@@ -47,6 +47,7 @@ public class SignalSequenceController : MonoBehaviour
     public float printerTime = 32f;
 
     private bool sequenceStarted = false;
+    private bool wowFoundSequenceStarted = false;
 
     private void Start()
     {
@@ -68,12 +69,75 @@ public class SignalSequenceController : MonoBehaviour
         Debug.Log("SignalSequenceController ready.");
     }
 
+    public void StartSequence()
+    {
+        if (sequenceStarted)
+        {
+            Debug.Log("Signal sequence already started.");
+            return;
+        }
+
+        sequenceStarted = true;
+
+        if (timeChangeController != null)
+            timeChangeController.StartTimeChange();
+
+        ShowStatus("SIGNAL MONITORING...");
+
+        StartCoroutine(DelayedMinigameStart());
+
+        Debug.Log("Signal sequence started.");
+    }
+
+    private IEnumerator DelayedMinigameStart()
+    {
+        yield return new WaitForSeconds(3f);
+
+        ShowStatus("WEAK ANOMALY DETECTED");
+        PlaySignalSound(weakSignalClip);
+
+        yield return new WaitForSeconds(3f);
+
+        ShowStatus("SIGNAL FLUCTUATION DETECTED");
+        PlaySignalSound(noiseClip);
+
+        yield return new WaitForSeconds(2f);
+
+        ShowStatus("SCANNING...");
+
+        yield return new WaitForSeconds(2f);
+
+        MoveToMonitor();
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (statusPanel != null)
+            statusPanel.SetActive(false);
+
+        if (minigameManager != null)
+        {
+            minigameManager.ShowMinigame();
+        }
+        else
+        {
+            Debug.LogWarning("Minigame Manager is not assigned. Starting old signal routine instead.");
+            StartCoroutine(SignalRoutine());
+        }
+    }
+
     public void StartWowFoundSequence()
     {
+        if (wowFoundSequenceStarted)
+        {
+            Debug.Log("Wow found sequence already started.");
+            return;
+        }
+
+        wowFoundSequenceStarted = true;
         StartCoroutine(WowFoundRoutine());
     }
 
-    IEnumerator WowFoundRoutine()
+    private IEnumerator WowFoundRoutine()
     {
         ShowStatus("STRONG NARROWBAND SIGNAL DETECTED");
         PlaySignalSound(strongSignalClip);
@@ -84,81 +148,43 @@ public class SignalSequenceController : MonoBehaviour
 
         yield return new WaitForSeconds(2f);
 
-        if(statusPanel != null)
+        ShowStatus("Press P to check the Paper");
+
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.P));
+
+        if (statusPanel != null)
             statusPanel.SetActive(false);
 
-        if(monitorSignalStarter != null)
+        if (monitorSignalStarter != null)
+        {
             monitorSignalStarter.StopSignalVideo();
+        }
+        else
+        {
+            Debug.LogWarning("Monitor Signal Starter is not assigned.");
+        }
 
-        if(printerAudioSource != null && printerClip != null)
+        if (printerAudioSource != null && printerClip != null)
             printerAudioSource.PlayOneShot(printerClip);
 
-        if(printerPaperAnimator != null)
+        if (printerPaperAnimator != null)
+        {
             printerPaperAnimator.StartPrint();
-        else if(wowSignalPaper != null)
-            wowSignalPaper.SetActive(true);
-
-        // switch back to player camera after printer starts
-        yield return new WaitForSeconds(1f);
-        MoveToPlayer();
-    }
-
-
-    public void StartSequence()
-    {
-        if (sequenceStarted) return;
-        sequenceStarted = true;
-
-        if (timeChangeController != null)
-            timeChangeController.StartTimeChange();
-
-        ShowStatus("SIGNAL MONITORING...");
-        StartCoroutine(DelayedMinigameStart());
-    }
-
-    IEnumerator DelayedMinigameStart()
-    {
-        yield return new WaitForSeconds(3f);
-        ShowStatus("WEAK ANOMALY DETECTED");
-        PlaySignalSound(weakSignalClip);
-
-        yield return new WaitForSeconds(3f);
-        ShowStatus("SIGNAL FLUCTUATION DETECTED");
-        PlaySignalSound(noiseClip);
-
-        yield return new WaitForSeconds(2f);
-        ShowStatus("SCANNING...");
-
-        yield return new WaitForSeconds(2f);
-
-        // switch to monitor camera
-        MoveToMonitor();
-
-        yield return new WaitForSeconds(0.5f);
-
-        if(statusPanel != null)
-            statusPanel.SetActive(false);
-
-        if(minigameManager != null)
-            minigameManager.ShowMinigame();
+        }
         else
-            StartCoroutine(SignalRoutine());
+        {
+            Debug.LogWarning("Printer Paper Animator is not assigned. Showing paper directly.");
+
+            if (wowSignalPaper != null)
+                wowSignalPaper.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        MoveToPlayer();
+
+        Debug.Log("Wow found sequence finished. Printer event started.");
     }
-
-
-    // public void StartSequence() OLD
-    // {
-    //     if (sequenceStarted)
-    //     {
-    //         Debug.Log("Signal sequence already started.");
-    //         return;
-    //     }
-
-    //     sequenceStarted = true;
-    //     StartCoroutine(SignalRoutine());
-
-    //     Debug.Log("Signal sequence coroutine started.");
-    // }
 
     private IEnumerator SignalRoutine()
     {
@@ -175,27 +201,33 @@ public class SignalSequenceController : MonoBehaviour
         }
 
         yield return new WaitForSeconds(weakSignalTime);
+
         ShowStatus("WEAK ANOMALY DETECTED");
         PlaySignalSound(weakSignalClip);
 
         yield return new WaitForSeconds(Mathf.Max(0f, eveningTime - weakSignalTime));
+
         ShowStatus("SIGNAL FLUCTUATION DETECTED");
         PlaySignalSound(noiseClip);
 
         yield return new WaitForSeconds(Mathf.Max(0f, signalLostTime - eveningTime));
+
         ShowStatus("SIGNAL LOST");
 
         yield return new WaitForSeconds(Mathf.Max(0f, nightTime - signalLostTime));
+
         ShowStatus("SCANNING CONTINUES");
 
         yield return new WaitForSeconds(Mathf.Max(0f, strongSignalTime - nightTime));
+
         ShowStatus("STRONG NARROWBAND SIGNAL DETECTED");
         PlaySignalSound(strongSignalClip);
 
         yield return new WaitForSeconds(Mathf.Max(0f, printerTime - strongSignalTime));
+
         ShowStatus("Press P to check the Paper");
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.P));
 
         if (statusPanel != null)
             statusPanel.SetActive(false);
@@ -226,7 +258,11 @@ public class SignalSequenceController : MonoBehaviour
                 wowSignalPaper.SetActive(true);
         }
 
-        Debug.Log("Signal sequence finished. Printer event started.");
+        yield return new WaitForSeconds(1f);
+
+        MoveToPlayer();
+
+        Debug.Log("Signal routine finished. Printer event started.");
     }
 
     private void ShowStatus(string message)
@@ -245,18 +281,32 @@ public class SignalSequenceController : MonoBehaviour
         if (signalAudioSource != null && clip != null)
             signalAudioSource.PlayOneShot(clip);
     }
-    void MoveToMonitor()
+
+    private void MoveToMonitor()
     {
-        if(playerCamera != null) playerCamera.enabled = false;
-        if(monitorCamera != null) monitorCamera.enabled = true;
-        if(playerLookScript != null) playerLookScript.enabled = false;
+        if (playerCamera != null)
+            playerCamera.enabled = false;
+
+        if (monitorCamera != null)
+            monitorCamera.enabled = true;
+
+        if (playerLookScript != null)
+            playerLookScript.enabled = false;
+
+        Debug.Log("Moved to monitor camera.");
     }
 
-    void MoveToPlayer()
+    private void MoveToPlayer()
     {
-        Debug.Log("MoveToPlayer called");
-        if(monitorCamera != null) monitorCamera.enabled = false;
-        if(playerCamera != null) playerCamera.enabled = true;
-        if(playerLookScript != null) playerLookScript.enabled = true;
+        if (monitorCamera != null)
+            monitorCamera.enabled = false;
+
+        if (playerCamera != null)
+            playerCamera.enabled = true;
+
+        if (playerLookScript != null)
+            playerLookScript.enabled = true;
+
+        Debug.Log("Moved to player camera.");
     }
 }
