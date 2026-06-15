@@ -25,29 +25,21 @@ public class TimeChangeController : MonoBehaviour
     public bool testWithVKey = true;
 
     private Coroutine lightRoutine;
+    private Coroutine prepareRoutine;
+    private Coroutine videoRoutine;
+
     private bool hasStarted = false;
-    private bool isPrepared = false;
+    private bool isPreparingFirstFrame = false;
+
+    private void Awake()
+    {
+        if (windowVideoPlayer == null)
+            windowVideoPlayer = GetComponent<VideoPlayer>();
+    }
 
     private void Start()
     {
-        ApplyInteriorLight(dayRoomIntensity, dayExtraInteriorIntensity);
-
-        if (windowVideoPlayer != null)
-        {
-            windowVideoPlayer.playOnAwake = false;
-            windowVideoPlayer.isLooping = false;
-            windowVideoPlayer.waitForFirstFrame = true;
-
-            windowVideoPlayer.Stop();
-            windowVideoPlayer.time = 0;
-
-            StartCoroutine(PrepareFirstFrameRoutine());
-        }
-        else
-        {
-            Debug.LogWarning("Window Video Player is not assigned.");
-        }
-
+        ResetTimeChange();
         Debug.Log("TimeChangeController ready.");
     }
 
@@ -58,84 +50,15 @@ public class TimeChangeController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.V))
         {
+            Debug.Log("V key pressed.");
             StartTimeChange();
         }
 
         if (Input.GetKeyDown(KeyCode.B))
         {
+            Debug.Log("B key pressed.");
             ResetTimeChange();
         }
-    }
-
-    private IEnumerator PrepareFirstFrameRoutine()
-    {
-        if (windowVideoPlayer == null)
-            yield break;
-
-        isPrepared = false;
-
-        windowVideoPlayer.Prepare();
-
-        while (!windowVideoPlayer.isPrepared)
-        {
-            yield return null;
-        }
-
-        // 첫 프레임을 RenderTexture에 실제로 그리기 위해 잠깐 재생
-        windowVideoPlayer.time = 0;
-        windowVideoPlayer.Play();
-
-        yield return null;
-        yield return null;
-
-        windowVideoPlayer.Pause();
-        windowVideoPlayer.time = 0;
-
-        isPrepared = true;
-
-        Debug.Log("Window video first frame prepared. Day image is displayed.");
-    }
-
-    public void StartTimeChange()
-    {
-        if (hasStarted)
-        {
-            Debug.Log("Time change already started.");
-            return;
-        }
-
-        hasStarted = true;
-
-        if (windowVideoPlayer != null)
-        {
-            StartCoroutine(PlayTimeVideoRoutine());
-        }
-
-        if (lightRoutine != null)
-            StopCoroutine(lightRoutine);
-
-        lightRoutine = StartCoroutine(ChangeInteriorLightRoutine());
-    }
-
-    private IEnumerator PlayTimeVideoRoutine()
-    {
-        if (windowVideoPlayer == null)
-            yield break;
-
-        if (!isPrepared)
-        {
-            while (!isPrepared)
-                yield return null;
-        }
-
-        windowVideoPlayer.Stop();
-        windowVideoPlayer.time = 0;
-
-        yield return null;
-
-        windowVideoPlayer.Play();
-
-        Debug.Log("Window time video started.");
     }
 
     public void ResetTimeChange()
@@ -148,14 +71,156 @@ public class TimeChangeController : MonoBehaviour
             lightRoutine = null;
         }
 
+        if (videoRoutine != null)
+        {
+            StopCoroutine(videoRoutine);
+            videoRoutine = null;
+        }
+
+        if (prepareRoutine != null)
+        {
+            StopCoroutine(prepareRoutine);
+            prepareRoutine = null;
+        }
+
         ApplyInteriorLight(dayRoomIntensity, dayExtraInteriorIntensity);
+
+        if (windowVideoPlayer == null)
+        {
+            Debug.LogWarning("Window Video Player is not assigned.");
+            return;
+        }
+
+        windowVideoPlayer.playOnAwake = false;
+        windowVideoPlayer.isLooping = false;
+        windowVideoPlayer.waitForFirstFrame = true;
+
+        windowVideoPlayer.Stop();
+        windowVideoPlayer.time = 0;
+
+        prepareRoutine = StartCoroutine(PrepareFirstFrameRoutine());
+
+        Debug.Log("Time change reset to day.");
+    }
+
+    private IEnumerator PrepareFirstFrameRoutine()
+    {
+        if (windowVideoPlayer == null)
+            yield break;
+
+        isPreparingFirstFrame = true;
+
+        windowVideoPlayer.Prepare();
+
+        while (!windowVideoPlayer.isPrepared)
+        {
+            yield return null;
+        }
+
+        // 여기서 이미 E가 눌려서 시간 변화가 시작됐다면,
+        // 첫 프레임 준비가 나중에 와서 영상을 Pause시키면 안 됨.
+        if (hasStarted)
+        {
+            isPreparingFirstFrame = false;
+            prepareRoutine = null;
+            Debug.Log("First frame prepare skipped because time change already started.");
+            yield break;
+        }
+
+        windowVideoPlayer.time = 0;
+        windowVideoPlayer.Play();
+
+        yield return null;
+        yield return null;
+
+        if (!hasStarted)
+        {
+            windowVideoPlayer.Pause();
+            windowVideoPlayer.time = 0;
+            Debug.Log("Window video first frame prepared. Day image is displayed.");
+        }
+
+        isPreparingFirstFrame = false;
+        prepareRoutine = null;
+    }
+
+    public void StartTimeChange()
+    {
+        Debug.Log("StartTimeChange received by: " + gameObject.name);
+
+        if (hasStarted)
+        {
+            Debug.Log("Time change already started.");
+            return;
+        }
+
+        hasStarted = true;
+
+        // 핵심: 첫 프레임 준비 코루틴이 아직 돌고 있으면 끊어야 함.
+        // 안 그러면 PrepareFirstFrameRoutine이 나중에 Pause를 걸 수 있음.
+        if (prepareRoutine != null)
+        {
+            StopCoroutine(prepareRoutine);
+            prepareRoutine = null;
+            isPreparingFirstFrame = false;
+            Debug.Log("First frame prepare routine stopped because time change started.");
+        }
+
+        if (videoRoutine != null)
+        {
+            StopCoroutine(videoRoutine);
+            videoRoutine = null;
+        }
 
         if (windowVideoPlayer != null)
         {
-            StartCoroutine(PrepareFirstFrameRoutine());
+            videoRoutine = StartCoroutine(PlayWindowVideoRoutine());
+        }
+        else
+        {
+            Debug.LogWarning("Window Video Player is not assigned.");
         }
 
-        Debug.Log("Time change reset to day.");
+        if (lightRoutine != null)
+            StopCoroutine(lightRoutine);
+
+        lightRoutine = StartCoroutine(ChangeInteriorLightRoutine());
+
+        Debug.Log("StartTimeChange called.");
+    }
+
+    private IEnumerator PlayWindowVideoRoutine()
+    {
+        if (windowVideoPlayer == null)
+            yield break;
+
+        windowVideoPlayer.Stop();
+
+        yield return null;
+
+        windowVideoPlayer.time = 0;
+        windowVideoPlayer.Prepare();
+
+        while (!windowVideoPlayer.isPrepared)
+        {
+            yield return null;
+        }
+
+        windowVideoPlayer.time = 0;
+        windowVideoPlayer.Play();
+
+        yield return new WaitForSeconds(0.2f);
+
+        Debug.Log(
+            "Window time video started. isPlaying: " +
+            windowVideoPlayer.isPlaying +
+            " / time: " +
+            windowVideoPlayer.time +
+            " / frame: " +
+            windowVideoPlayer.frame
+        );
+
+        videoRoutine = null;
     }
 
     private IEnumerator ChangeInteriorLightRoutine()

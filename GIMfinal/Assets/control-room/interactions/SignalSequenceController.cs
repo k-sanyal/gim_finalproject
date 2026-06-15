@@ -48,12 +48,14 @@ public class SignalSequenceController : MonoBehaviour
 
     private bool sequenceStarted = false;
     private bool wowFoundSequenceStarted = false;
+    private bool timeChangeStarted = false;
 
     private void Start()
     {
         if (timeChangeController != null)
         {
             timeChangeController.ResetTimeChange();
+            Debug.Log("TimeChangeController reset from SignalSequenceController.");
         }
         else
         {
@@ -68,27 +70,32 @@ public class SignalSequenceController : MonoBehaviour
 
         Debug.Log("SignalSequenceController ready.");
     }
-
-    public void StartSequence()
+public void StartSequence()
+{
+    if (sequenceStarted)
     {
-        if (sequenceStarted)
-        {
-            Debug.Log("Signal sequence already started.");
-            return;
-        }
-
-        sequenceStarted = true;
-
-        if (timeChangeController != null)
-            timeChangeController.StartTimeChange();
-
-        ShowStatus("SIGNAL MONITORING...");
-
-        StartCoroutine(DelayedMinigameStart());
-
-        Debug.Log("Signal sequence started.");
+        Debug.Log("Signal sequence already started.");
+        return;
     }
 
+    sequenceStarted = true;
+
+    if (timeChangeController != null)
+    {
+        Debug.Log("E sequence requesting time change on: " + timeChangeController.gameObject.name);
+        timeChangeController.StartTimeChange();
+    }
+    else
+    {
+        Debug.LogWarning("Time Change Controller is not assigned.");
+    }
+
+    ShowStatus("SIGNAL MONITORING...");
+
+    StartCoroutine(DelayedMinigameStart());
+
+    Debug.Log("Signal sequence started.");
+}
     private IEnumerator DelayedMinigameStart()
     {
         yield return new WaitForSeconds(3f);
@@ -134,6 +141,10 @@ public class SignalSequenceController : MonoBehaviour
         }
 
         wowFoundSequenceStarted = true;
+
+        // 혹시 E 시점에서 time change가 시작 안 됐을 때 보험
+        StartTimeChangeIfNeeded("StartWowFoundSequence");
+
         StartCoroutine(WowFoundRoutine());
     }
 
@@ -190,15 +201,7 @@ public class SignalSequenceController : MonoBehaviour
     {
         ShowStatus("SIGNAL MONITORING...");
 
-        if (timeChangeController != null)
-        {
-            timeChangeController.StartTimeChange();
-            Debug.Log("Time change started from SignalSequenceController.");
-        }
-        else
-        {
-            Debug.LogWarning("Time Change Controller is not assigned.");
-        }
+        StartTimeChangeIfNeeded("SignalRoutine");
 
         yield return new WaitForSeconds(weakSignalTime);
 
@@ -242,9 +245,7 @@ public class SignalSequenceController : MonoBehaviour
         }
 
         if (printerAudioSource != null && printerClip != null)
-        {
             printerAudioSource.PlayOneShot(printerClip);
-        }
 
         if (printerPaperAnimator != null)
         {
@@ -263,6 +264,26 @@ public class SignalSequenceController : MonoBehaviour
         MoveToPlayer();
 
         Debug.Log("Signal routine finished. Printer event started.");
+    }
+
+    private void StartTimeChangeIfNeeded(string callerName)
+    {
+        if (timeChangeStarted)
+        {
+            Debug.Log("Time change already started. Caller: " + callerName);
+            return;
+        }
+
+        if (timeChangeController == null)
+        {
+            Debug.LogWarning("Time Change Controller is not assigned. Caller: " + callerName);
+            return;
+        }
+
+        timeChangeStarted = true;
+        timeChangeController.StartTimeChange();
+
+        Debug.Log("Time change started. Caller: " + callerName);
     }
 
     private void ShowStatus(string message)

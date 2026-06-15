@@ -176,7 +176,7 @@ public class MinigameManager : MonoBehaviour
     {
         if(minigameCanvas != null) minigameCanvas.SetActive(true);
 
-        gameObject.SetActive(true);
+        // gameObject.SetActive(true);
         gameActive = true;
         caughtCount = 0;
         wowActive = false;
