@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: ee4dc5ea12f1b46b1ba04ab298860346
+  - enabled: 1
     path: Assets/Scenes/Office.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
@@ -14,6 +17,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ConsoleRoom/ConsoleRoom.unity
     guid: 2382dddb58adbfe4586f9c7057783a2c
+  - enabled: 1
+    path: Assets/Scenes/ConferenceRoom.unity
+    guid: ac286564d427e0c4f85ec37c9b2bd41f
+  - enabled: 1
+    path: Assets/Scenes/GolfCourse.unity
+    guid: bd7bfcfc874a0d04ead3c59d9d9a9a09
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
