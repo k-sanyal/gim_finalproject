@@ -271,13 +271,14 @@ GameObject:
   - component: {fileID: 43260120}
   - component: {fileID: 43260118}
   - component: {fileID: 43260122}
+  - component: {fileID: 43260123}
   m_Layer: 5
   m_Name: Dialogue2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &43260117
 RectTransform:
   m_ObjectHideFlags: 0
@@ -372,6 +373,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &43260123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43260116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a7fd752312914f79a26a9b7e5950537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueTyper
+  dialogueText: {fileID: 1212812820}
+  typingSpeed: 0.04
 --- !u!1 &48345029
 GameObject:
   m_ObjectHideFlags: 0
@@ -3939,13 +3954,14 @@ GameObject:
   - component: {fileID: 820109291}
   - component: {fileID: 820109290}
   - component: {fileID: 820109289}
+  - component: {fileID: 820109293}
   m_Layer: 5
   m_Name: Dialogue3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &820109288
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4040,6 +4056,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 820109287}
   m_CullTransparentMesh: 1
+--- !u!114 &820109293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 820109287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a7fd752312914f79a26a9b7e5950537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueTyper
+  dialogueText: {fileID: 1321520349}
+  typingSpeed: 0.04
 --- !u!1001 &871721391
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6186,13 +6216,14 @@ GameObject:
   - component: {fileID: 1187879922}
   - component: {fileID: 1187879925}
   - component: {fileID: 1187879926}
+  - component: {fileID: 1187879927}
   m_Layer: 5
   m_Name: Dialogue1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1187879921
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6287,6 +6318,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1187879927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187879920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a7fd752312914f79a26a9b7e5950537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueTyper
+  dialogueText: {fileID: 448179212}
+  typingSpeed: 0.04
 --- !u!1 &1212812818
 GameObject:
   m_ObjectHideFlags: 0
@@ -7022,6 +7067,97 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1001 &1320686688
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.435827
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.350381
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.5156223
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9926375
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.12112341
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 13.914
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: m_Name
+      value: man_scientist
+      objectReference: {fileID: 0}
+    - target: {fileID: 2464032485589455774, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 3263931781923126087, guid: c44eb0f2f544f41dcb11dc5f32918690, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1320686690}
+  m_SourcePrefab: {fileID: 100100000, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+--- !u!1 &1320686689 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b27df6d43e13d43b39b9118b915b249c, type: 3}
+  m_PrefabInstance: {fileID: 1320686688}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1320686690
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320686689}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 028c14cafdd744ec39a514b09fb2253d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1321520347
 GameObject:
   m_ObjectHideFlags: 0
@@ -7422,12 +7558,7 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'thumb_02_l'\n\tTransform 'pinky_03_l'\n\tTransform
-    'middle_01_l'\n\tTransform 'index_02_l'\n\tTransform 'index_03_l'\n\tTransform
-    'upperleg_l'\n\tTransform 'spine_02'\n\tTransform 'ring_03_l'\n\tTransform 'root'\n\tTransform
-    'thumb_01_r'\n\tand more ..."
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
@@ -26858,3 +26989,4 @@ SceneRoots:
   - {fileID: 48345031}
   - {fileID: 2021178197}
   - {fileID: 533607211}
+  - {fileID: 1320686688}
