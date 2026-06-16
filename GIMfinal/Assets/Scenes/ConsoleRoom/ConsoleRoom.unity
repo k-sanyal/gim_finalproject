@@ -3604,7 +3604,7 @@ MonoBehaviour:
   dayExtraInteriorIntensity: 0.2
   nightExtraInteriorIntensity: 1.4
   lightTransitionDuration: 15
-  testWithVKey: 1
+  testWithVKey: 0
 --- !u!1 &653211283
 GameObject:
   m_ObjectHideFlags: 0
@@ -3848,6 +3848,8 @@ MonoBehaviour:
   signalPhaseUnlocked: 0
   objectivePanel: {fileID: 1688428391}
   objectiveText: {fileID: 1666577916}
+  timeChangeController: {fileID: 1458006711}
+  timeChangeStartDelay: 0.3
 --- !u!4 &666692509
 Transform:
   m_ObjectHideFlags: 0
@@ -5689,7 +5691,6 @@ MonoBehaviour:
   playerCamera: {fileID: 1043902867}
   monitorCamera: {fileID: 1883267483}
   playerLookScript: {fileID: 1212142753}
-  timeChangeController: {fileID: 1458006711}
   statusPanel: {fileID: 522247712}
   statusText: {fileID: 1284546465}
   signalAudioSource: {fileID: 1535769882}
@@ -8361,7 +8362,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press E to detect signals
+  m_text: Press E and V to detect signals
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

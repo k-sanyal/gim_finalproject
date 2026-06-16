@@ -63,7 +63,6 @@ public class MonitorSignalStarter : MonoBehaviour
             return;
         }
 
-        // 시그널 단계가 처음 열렸을 때 UI 표시
         if (!promptShown)
         {
             promptShown = true;
@@ -75,7 +74,6 @@ public class MonitorSignalStarter : MonoBehaviour
             Debug.Log("Press E UI shown.");
         }
 
-        // UI가 조금 보인 뒤에만 E 입력 허용
         if (Time.time - promptShownTime < eInputDelay)
             return;
 
@@ -95,20 +93,7 @@ public class MonitorSignalStarter : MonoBehaviour
         if (signalPlayingUI != null)
             signalPlayingUI.SetActive(true);
 
-        if (signalVideoPlayer != null)
-        {
-            signalVideoPlayer.Stop();
-            signalVideoPlayer.time = 0;
-            signalVideoPlayer.isLooping = true;
-            signalVideoPlayer.Play();
-
-            Debug.Log("Loop signal video started.");
-        }
-        else
-        {
-            Debug.LogWarning("Signal Video Player is not assigned.");
-        }
-
+        // 먼저 시간 변화 / 시퀀스 시작
         if (signalSequenceController != null)
         {
             signalSequenceController.StartSequence();
@@ -117,6 +102,21 @@ public class MonitorSignalStarter : MonoBehaviour
         else
         {
             Debug.LogWarning("Signal Sequence Controller is not assigned.");
+        }
+
+        // 그 다음 모니터 신호 영상 시작
+        if (signalVideoPlayer != null)
+        {
+            signalVideoPlayer.Stop();
+            signalVideoPlayer.time = 0;
+            signalVideoPlayer.isLooping = true;
+            signalVideoPlayer.Play();
+
+            Debug.Log("Loop signal video started. VideoPlayer object: " + signalVideoPlayer.gameObject.name);
+        }
+        else
+        {
+            Debug.LogWarning("Signal Video Player is not assigned.");
         }
 
         Debug.Log("Signal monitoring started.");
@@ -137,10 +137,10 @@ public class MonitorSignalStarter : MonoBehaviour
     }
 
     public void StartSignalMonitoringFromOutside()
-{
-    if (signalStarted)
-        return;
+    {
+        if (signalStarted)
+            return;
 
-    StartSignalMonitoring();
+        StartSignalMonitoring();
+    }
 }
-} 

@@ -29,7 +29,6 @@ public class TimeChangeController : MonoBehaviour
     private Coroutine videoRoutine;
 
     private bool hasStarted = false;
-    private bool isPreparingFirstFrame = false;
 
     private void Awake()
     {
@@ -108,8 +107,6 @@ public class TimeChangeController : MonoBehaviour
         if (windowVideoPlayer == null)
             yield break;
 
-        isPreparingFirstFrame = true;
-
         windowVideoPlayer.Prepare();
 
         while (!windowVideoPlayer.isPrepared)
@@ -117,11 +114,9 @@ public class TimeChangeController : MonoBehaviour
             yield return null;
         }
 
-        // 여기서 이미 E가 눌려서 시간 변화가 시작됐다면,
-        // 첫 프레임 준비가 나중에 와서 영상을 Pause시키면 안 됨.
+        // 이미 시간 변화가 시작됐으면 첫 프레임 준비가 나중에 Pause 걸지 않게 종료
         if (hasStarted)
         {
-            isPreparingFirstFrame = false;
             prepareRoutine = null;
             Debug.Log("First frame prepare skipped because time change already started.");
             yield break;
@@ -140,7 +135,6 @@ public class TimeChangeController : MonoBehaviour
             Debug.Log("Window video first frame prepared. Day image is displayed.");
         }
 
-        isPreparingFirstFrame = false;
         prepareRoutine = null;
     }
 
@@ -150,36 +144,21 @@ public class TimeChangeController : MonoBehaviour
 
         if (hasStarted)
         {
-            Debug.Log("Time change already started.");
+            Debug.Log("Time change already started. Forcing window video again.");
+            ForcePlayWindowVideoFromBeginning();
             return;
         }
 
         hasStarted = true;
 
-        // 핵심: 첫 프레임 준비 코루틴이 아직 돌고 있으면 끊어야 함.
-        // 안 그러면 PrepareFirstFrameRoutine이 나중에 Pause를 걸 수 있음.
         if (prepareRoutine != null)
         {
             StopCoroutine(prepareRoutine);
             prepareRoutine = null;
-            isPreparingFirstFrame = false;
             Debug.Log("First frame prepare routine stopped because time change started.");
         }
 
-        if (videoRoutine != null)
-        {
-            StopCoroutine(videoRoutine);
-            videoRoutine = null;
-        }
-
-        if (windowVideoPlayer != null)
-        {
-            videoRoutine = StartCoroutine(PlayWindowVideoRoutine());
-        }
-        else
-        {
-            Debug.LogWarning("Window Video Player is not assigned.");
-        }
+        ForcePlayWindowVideoFromBeginning();
 
         if (lightRoutine != null)
             StopCoroutine(lightRoutine);
@@ -189,22 +168,34 @@ public class TimeChangeController : MonoBehaviour
         Debug.Log("StartTimeChange called.");
     }
 
-    private IEnumerator PlayWindowVideoRoutine()
+    public void ForcePlayWindowVideoFromBeginning()
     {
+        if (windowVideoPlayer == null)
+        {
+            Debug.LogWarning("Window Video Player is not assigned.");
+            return;
+        }
+
+        if (videoRoutine != null)
+        {
+            StopCoroutine(videoRoutine);
+            videoRoutine = null;
+        }
+
+        videoRoutine = StartCoroutine(ForcePlayWindowVideoFromBeginningRoutine());
+    }
+
+    private IEnumerator ForcePlayWindowVideoFromBeginningRoutine()
+    {
+        Debug.Log("ForcePlayWindowVideoFromBeginning called.");
+
         if (windowVideoPlayer == null)
             yield break;
 
         windowVideoPlayer.Stop();
 
         yield return null;
-
-        windowVideoPlayer.time = 0;
-        windowVideoPlayer.Prepare();
-
-        while (!windowVideoPlayer.isPrepared)
-        {
-            yield return null;
-        }
+        yield return null;
 
         windowVideoPlayer.time = 0;
         windowVideoPlayer.Play();
@@ -212,7 +203,18 @@ public class TimeChangeController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
 
         Debug.Log(
-            "Window time video started. isPlaying: " +
+            "Forced window video play / isPlaying: " +
+            windowVideoPlayer.isPlaying +
+            " / time: " +
+            windowVideoPlayer.time +
+            " / frame: " +
+            windowVideoPlayer.frame
+        );
+
+        yield return new WaitForSeconds(1f);
+
+        Debug.Log(
+            "Forced window video after 1 sec / isPlaying: " +
             windowVideoPlayer.isPlaying +
             " / time: " +
             windowVideoPlayer.time +

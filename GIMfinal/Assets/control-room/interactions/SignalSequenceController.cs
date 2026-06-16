@@ -12,9 +12,6 @@ public class SignalSequenceController : MonoBehaviour
     public Camera monitorCamera;
     public PlayerController playerLookScript;
 
-    [Header("Time Change")]
-    public TimeChangeController timeChangeController;
-
     [Header("Status UI")]
     public GameObject statusPanel;
     public TMP_Text statusText;
@@ -48,20 +45,9 @@ public class SignalSequenceController : MonoBehaviour
 
     private bool sequenceStarted = false;
     private bool wowFoundSequenceStarted = false;
-    private bool timeChangeStarted = false;
 
     private void Start()
     {
-        if (timeChangeController != null)
-        {
-            timeChangeController.ResetTimeChange();
-            Debug.Log("TimeChangeController reset from SignalSequenceController.");
-        }
-        else
-        {
-            Debug.LogWarning("Time Change Controller is not assigned.");
-        }
-
         if (statusPanel != null)
             statusPanel.SetActive(false);
 
@@ -70,32 +56,24 @@ public class SignalSequenceController : MonoBehaviour
 
         Debug.Log("SignalSequenceController ready.");
     }
-public void StartSequence()
-{
-    if (sequenceStarted)
+
+    public void StartSequence()
     {
-        Debug.Log("Signal sequence already started.");
-        return;
+        if (sequenceStarted)
+        {
+            Debug.Log("Signal sequence already started.");
+            return;
+        }
+
+        sequenceStarted = true;
+
+        ShowStatus("SIGNAL MONITORING...");
+
+        StartCoroutine(DelayedMinigameStart());
+
+        Debug.Log("Signal sequence started.");
     }
 
-    sequenceStarted = true;
-
-    if (timeChangeController != null)
-    {
-        Debug.Log("E sequence requesting time change on: " + timeChangeController.gameObject.name);
-        timeChangeController.StartTimeChange();
-    }
-    else
-    {
-        Debug.LogWarning("Time Change Controller is not assigned.");
-    }
-
-    ShowStatus("SIGNAL MONITORING...");
-
-    StartCoroutine(DelayedMinigameStart());
-
-    Debug.Log("Signal sequence started.");
-}
     private IEnumerator DelayedMinigameStart()
     {
         yield return new WaitForSeconds(3f);
@@ -141,9 +119,6 @@ public void StartSequence()
         }
 
         wowFoundSequenceStarted = true;
-
-        // 혹시 E 시점에서 time change가 시작 안 됐을 때 보험
-        StartTimeChangeIfNeeded("StartWowFoundSequence");
 
         StartCoroutine(WowFoundRoutine());
     }
@@ -200,8 +175,6 @@ public void StartSequence()
     private IEnumerator SignalRoutine()
     {
         ShowStatus("SIGNAL MONITORING...");
-
-        StartTimeChangeIfNeeded("SignalRoutine");
 
         yield return new WaitForSeconds(weakSignalTime);
 
@@ -264,26 +237,6 @@ public void StartSequence()
         MoveToPlayer();
 
         Debug.Log("Signal routine finished. Printer event started.");
-    }
-
-    private void StartTimeChangeIfNeeded(string callerName)
-    {
-        if (timeChangeStarted)
-        {
-            Debug.Log("Time change already started. Caller: " + callerName);
-            return;
-        }
-
-        if (timeChangeController == null)
-        {
-            Debug.LogWarning("Time Change Controller is not assigned. Caller: " + callerName);
-            return;
-        }
-
-        timeChangeStarted = true;
-        timeChangeController.StartTimeChange();
-
-        Debug.Log("Time change started. Caller: " + callerName);
     }
 
     private void ShowStatus(string message)

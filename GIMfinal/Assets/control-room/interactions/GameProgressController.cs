@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using TMPro;
 
@@ -13,23 +14,27 @@ public class GameProgressController : MonoBehaviour
     public GameObject objectivePanel;
     public TMP_Text objectiveText;
 
+    [Header("Time Change")]
+    public TimeChangeController timeChangeController;
+
+    [Header("Time Change Delay")]
+    public float timeChangeStartDelay = 0.3f;
+
+    private bool timeChangeStarted = false;
+
     public void StartInfoPhase()
     {
-        // 이미 시그널 단계가 열렸으면 기존 조사 UI 다시 켜지지 않게 막음
         if (signalPhaseUnlocked)
             return;
 
         if (objectivePanel != null)
-        {
             objectivePanel.SetActive(true);
-        }
 
         UpdateObjectiveText();
     }
 
     public void RegisterViewedObject(InteractableObject obj)
     {
-        // 이미 시그널 단계가 열렸으면 더 이상 조사 등록 안 함
         if (signalPhaseUnlocked)
             return;
 
@@ -66,18 +71,53 @@ public class GameProgressController : MonoBehaviour
                 continue;
 
             if (!obj.hasBeenViewed)
-            {
                 return;
-            }
         }
 
         signalPhaseUnlocked = true;
 
-        // 4/4 완료 순간 기존 Objective UI 끄기
         if (objectivePanel != null)
             objectivePanel.SetActive(false);
 
         Debug.Log("Signal Phase Unlocked!");
+
+        StartTimeChangeFromProgress();
+    }
+
+    private void StartTimeChangeFromProgress()
+    {
+        if (timeChangeStarted)
+        {
+            Debug.Log("Time change already started from GameProgressController.");
+            return;
+        }
+
+        if (timeChangeController == null)
+        {
+            Debug.LogWarning("Time Change Controller is not assigned in GameProgressController.");
+            return;
+        }
+
+        timeChangeStarted = true;
+
+        StartCoroutine(DelayedTimeChangeStart());
+
+        Debug.Log("Time change scheduled when all required objects were reviewed.");
+    }
+
+    private IEnumerator DelayedTimeChangeStart()
+    {
+        yield return new WaitForSeconds(timeChangeStartDelay);
+
+        if (timeChangeController != null)
+        {
+            Debug.Log("Delayed time change start now.");
+            timeChangeController.StartTimeChange();
+        }
+        else
+        {
+            Debug.LogWarning("Time Change Controller became null before delayed start.");
+        }
     }
 
     void UpdateObjectiveText()
@@ -85,7 +125,6 @@ public class GameProgressController : MonoBehaviour
         if (objectiveText == null)
             return;
 
-        // 시그널 단계가 열리면 기존 조사 UI는 꺼진 상태 유지
         if (signalPhaseUnlocked)
         {
             if (objectivePanel != null)
@@ -105,9 +144,7 @@ public class GameProgressController : MonoBehaviour
             totalCount++;
 
             if (obj.hasBeenViewed)
-            {
                 viewedCount++;
-            }
         }
 
         objectiveText.text =
@@ -120,7 +157,6 @@ public class GameProgressController : MonoBehaviour
         return signalPhaseUnlocked;
     }
 
-    // InteractionManager에서 조사 가능 여부 확인할 때 사용
     public bool CanInspectObjects()
     {
         return !signalPhaseUnlocked;
