@@ -1219,6 +1219,7 @@ GameObject:
   - component: {fileID: 140928374}
   - component: {fileID: 140928376}
   - component: {fileID: 140928375}
+  - component: {fileID: 140928377}
   m_Layer: 5
   m_Name: MonitorPanel
   m_TagString: Untagged
@@ -1286,6 +1287,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 140928373}
   m_CullTransparentMesh: 1
+--- !u!114 &140928377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140928373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b35cb8e8c0643704a988a99ce371eaae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueMotion
+  dialogueText: {fileID: 0}
+  typingSpeed: 0.01
+  playOnEnable: 1
 --- !u!1 &170569910
 GameObject:
   m_ObjectHideFlags: 0
@@ -2201,6 +2217,7 @@ GameObject:
   - component: {fileID: 352134933}
   - component: {fileID: 352134932}
   - component: {fileID: 352134931}
+  - component: {fileID: 352134934}
   m_Layer: 5
   m_Name: MisstionTxt
   m_TagString: Untagged
@@ -2261,7 +2278,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -2327,6 +2344,21 @@ RectTransform:
   m_AnchoredPosition: {x: 3, y: -377}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &352134934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352134930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b35cb8e8c0643704a988a99ce371eaae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueMotion
+  dialogueText: {fileID: 352134931}
+  typingSpeed: 0.03
+  playOnEnable: 1
 --- !u!1 &372049212
 GameObject:
   m_ObjectHideFlags: 0
@@ -2723,6 +2755,7 @@ GameObject:
   - component: {fileID: 461673334}
   - component: {fileID: 461673336}
   - component: {fileID: 461673335}
+  - component: {fileID: 461673337}
   m_Layer: 5
   m_Name: BodyText
   m_TagString: Untagged
@@ -2849,6 +2882,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 461673333}
   m_CullTransparentMesh: 1
+--- !u!114 &461673337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 461673333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b35cb8e8c0643704a988a99ce371eaae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueMotion
+  dialogueText: {fileID: 461673335}
+  typingSpeed: 0.04
+  playOnEnable: 1
 --- !u!1 &471388160
 GameObject:
   m_ObjectHideFlags: 0
@@ -2891,6 +2939,7 @@ GameObject:
   - component: {fileID: 489538584}
   - component: {fileID: 489538586}
   - component: {fileID: 489538585}
+  - component: {fileID: 489538587}
   m_Layer: 5
   m_Name: HoverText
   m_TagString: Untagged
@@ -3017,6 +3066,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 489538583}
   m_CullTransparentMesh: 1
+--- !u!114 &489538587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 489538583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b35cb8e8c0643704a988a99ce371eaae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueMotion
+  dialogueText: {fileID: 489538585}
+  typingSpeed: 0.04
+  playOnEnable: 1
 --- !u!1 &489589267
 GameObject:
   m_ObjectHideFlags: 0
@@ -5693,6 +5757,7 @@ MonoBehaviour:
   playerLookScript: {fileID: 1212142753}
   statusPanel: {fileID: 522247712}
   statusText: {fileID: 1284546465}
+  statusMotion: {fileID: 1284546466}
   signalAudioSource: {fileID: 1535769882}
   printerAudioSource: {fileID: 1641888636}
   weakSignalClip: {fileID: 8300000, guid: f8abffb11d4ac4c4388f6dd68139a81f, type: 3}
@@ -7230,6 +7295,7 @@ GameObject:
   - component: {fileID: 1284546463}
   - component: {fileID: 1284546464}
   - component: {fileID: 1284546465}
+  - component: {fileID: 1284546466}
   m_Layer: 5
   m_Name: StatusTxt
   m_TagString: Untagged
@@ -7356,6 +7422,21 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1284546466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1284546462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b35cb8e8c0643704a988a99ce371eaae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueMotion
+  dialogueText: {fileID: 1284546465}
+  typingSpeed: 0.04
+  playOnEnable: 1
 --- !u!1 &1298393510
 GameObject:
   m_ObjectHideFlags: 0
@@ -8335,6 +8416,7 @@ GameObject:
   - component: {fileID: 1531731758}
   - component: {fileID: 1531731757}
   - component: {fileID: 1531731756}
+  - component: {fileID: 1531731759}
   m_Layer: 5
   m_Name: SignalTxt
   m_TagString: Untagged
@@ -8461,6 +8543,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -382}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1531731759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1531731755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b35cb8e8c0643704a988a99ce371eaae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueMotion
+  dialogueText: {fileID: 1531731756}
+  typingSpeed: 0.03
+  playOnEnable: 1
 --- !u!1 &1535769881
 GameObject:
   m_ObjectHideFlags: 0
@@ -8730,7 +8827,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.50980395}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.87058824}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9500,6 +9597,7 @@ GameObject:
   - component: {fileID: 1666577918}
   - component: {fileID: 1666577917}
   - component: {fileID: 1666577916}
+  - component: {fileID: 1666577919}
   m_Layer: 5
   m_Name: ObectiveTxt
   m_TagString: Untagged
@@ -9626,6 +9724,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1666577919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666577915}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b35cb8e8c0643704a988a99ce371eaae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DialogueMotion
+  dialogueText: {fileID: 1666577916}
+  typingSpeed: 0.015
+  playOnEnable: 1
 --- !u!1 &1681170373
 GameObject:
   m_ObjectHideFlags: 0

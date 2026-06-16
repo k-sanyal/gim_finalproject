@@ -16,6 +16,9 @@ public class SignalSequenceController : MonoBehaviour
     public GameObject statusPanel;
     public TMP_Text statusText;
 
+    [Header("Status Motion")]
+    public DialogueMotion statusMotion;
+
     [Header("Audio Sources")]
     public AudioSource signalAudioSource;
     public AudioSource printerAudioSource;
@@ -48,6 +51,9 @@ public class SignalSequenceController : MonoBehaviour
 
     private void Start()
     {
+        if (statusMotion == null && statusPanel != null)
+            statusMotion = statusPanel.GetComponentInChildren<DialogueMotion>();
+
         if (statusPanel != null)
             statusPanel.SetActive(false);
 
@@ -239,16 +245,20 @@ public class SignalSequenceController : MonoBehaviour
         Debug.Log("Signal routine finished. Printer event started.");
     }
 
-    private void ShowStatus(string message)
-    {
-        if (statusPanel != null)
-            statusPanel.SetActive(true);
+private void ShowStatus(string message)
+{
+    if (statusText != null)
+        statusText.text = message;
 
-        if (statusText != null)
-            statusText.text = message;
+    if (statusPanel != null)
+        statusPanel.SetActive(true);
 
-        Debug.Log("Signal Status: " + message);
-    }
+    DialogueMotion motion = statusText.GetComponent<DialogueMotion>();
+    if (motion != null)
+        motion.PlayCurrentText();
+
+    Debug.Log("Signal Status: " + message);
+}
 
     private void PlaySignalSound(AudioClip clip)
     {
